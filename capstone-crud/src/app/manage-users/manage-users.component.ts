@@ -67,7 +67,6 @@ export class ManageUsersComponent {
       );
     }
   }
-
   UpdateRecords(currentUser: any) {
     let bodyData = {
       UserName: currentUser.UserName,

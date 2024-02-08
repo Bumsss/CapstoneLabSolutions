@@ -26,19 +26,17 @@
             <td>{{ user.UserName }}</td>
             <td>{{ user.Password }}</td>
             <td>
-              <div class="select-levels">
-                <select
-                  [(ngModel)]="user.AccessLevelID"
-                  (change)="updateAccessLevel(user)"
+              <select
+                [(ngModel)]="user.AccessLevelID"
+                (change)="updateAccessLevel(user)"
+              >
+                <option
+                  *ngFor="let AccessItem of AccessLevels"
+                  [value]="AccessItem.AccessLevelID"
                 >
-                  <option
-                    *ngFor="let AccessItem of AccessLevels"
-                    [value]="AccessItem.AccessLevelID"
-                  >
-                    {{ AccessItem.AccessName }}
-                  </option>
-                </select>
-              </div>
+                  {{ AccessItem.AccessName }}
+                </option>
+              </select>
             </td>
 
             <td>

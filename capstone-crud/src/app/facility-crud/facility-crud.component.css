@@ -213,6 +213,11 @@ button {
   color: #fff;
   transition: background-color 0.3s ease;
   border-radius: 4px;
+  transition: 0.5s;
+}
+
+button:hover {
+  transform: translateY(-3px);
 }
 
 .active {

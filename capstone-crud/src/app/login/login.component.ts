@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,8 @@ import { MatIconModule } from '@angular/material/icon';
 export class LoginComponent {
   imageUrl: string = '/assets/ccjef_logo.png';
   termsAgreed: boolean = false;
+
+  @Output() logoutEvent = new EventEmitter<void>();
 
   @ViewChild('UserName') UserName!: ElementRef;
   @ViewChild('Password') Password!: ElementRef;
@@ -77,6 +80,12 @@ export class LoginComponent {
         alert('An error occurred during login.');
       }
     );
+  }
+
+  logout() {
+    this.authService.logout(); // Call logout() from AuthService
+    this.router.navigate(['/login']); // Redirect to login page after logout
+    this.logoutEvent.emit();
   }
 
   private redirectUser(): void {
