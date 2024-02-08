@@ -1,0 +1,11 @@
+Color Palette
+
+Darkest:
+
+#660066
+
+Semi Dark
+#993399
+
+Light (header)
+#e2bce2
