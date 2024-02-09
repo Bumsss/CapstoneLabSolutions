@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const router = express.Router();
 const mysql = require("mysql");
 const server = express();
-
+const nodemailer = require("nodemailer");
 // const bcrypt = require("bcrypt");
 
 server.use(bodyParser.json());
@@ -31,6 +31,7 @@ server.listen(8085, function check(error) {
   if (error) console.log("Error...");
   else console.log("Started... 8085");
 });
+
 //------------------------------------------- API FOR COURSES ------------------------------------------------
 server.get("/api/courses", (req, res) => {
   var sql = "SELECT * FROM tblCourses";
@@ -621,6 +622,34 @@ server.delete("/api/access/delete/:id", (req, res) => {
       res.send({ status: false, message: "Access Delete Failed!" });
     } else {
       res.send({ status: true, message: "Access Deleted Successfully!" });
+    }
+  });
+});
+
+// EMAIL
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "allenbumanlagbackup@gmail.com",
+    pass: "allenboss03rocks",
+  },
+});
+
+server.post("/send-email", (req, res) => {
+  const mailOptions = {
+    from: "allenbumanlagbackup@gmail.com",
+    to: "allenbumanlag@gmail.com",
+    subject: "Low Stock Alert",
+    text: "Stocks are low. Please check the inventory.",
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send(error.toString());
+    } else {
+      console.log("Email sent: " + info.response);
+      res.status(200).send("Email sent successfully");
     }
   });
 });

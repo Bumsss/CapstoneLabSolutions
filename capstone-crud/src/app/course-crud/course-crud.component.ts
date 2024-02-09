@@ -8,6 +8,9 @@ import { RouterModule } from '@angular/router';
 import { EquipmentCrudComponent } from '../equipment-crud/equipment-crud.component';
 import { ConsumableCrudComponent } from '../consumable-crud/consumable-crud.component';
 import { error } from 'console';
+import { MatIconModule } from '@angular/material/icon';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 // --------------------------------
 
 @Component({
@@ -22,14 +25,15 @@ import { error } from 'console';
     RouterModule,
     EquipmentCrudComponent,
     ConsumableCrudComponent,
+    MatIconModule,
+    NgxPaginationModule,
   ],
   templateUrl: './course-crud.component.html',
   styleUrl: './course-crud.component.css',
 })
 export class CourseCrudComponent {
-  EquipmentArray: any[] = [];
   CourseID: number = 1;
-
+  EquipmentArray: any[] = [];
   CourseArray: any[] = [];
   isResultLoaded = false;
   isUpdateFormActive = false;
@@ -37,6 +41,9 @@ export class CourseCrudComponent {
   currentID: any;
   CourseCode: string = '';
   CourseName: string = '';
+
+  p: number = 1;
+  itemsPerPage: number = 7;
   // added course service, remove if not working
   constructor(private http: HttpClient) {
     this.getAllCourses();

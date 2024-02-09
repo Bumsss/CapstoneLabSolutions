@@ -87,6 +87,14 @@
             Add
           </button>
         </div>
+        <div class="pdf-button">
+          <input
+            type="button"
+            value="Download PDF"
+            class="btn btn-success"
+            (click)="SavePDF()"
+          />
+        </div>
       </form>
     </div>
 
@@ -138,15 +146,6 @@
           </tr>
         </tbody>
       </table>
-
-      <div class="pdf-button">
-        <input
-          type="button"
-          value="Download PDF"
-          class="btn btn-success"
-          (click)="SavePDF()"
-        />
-      </div>
     </div>
   </div>
 </div>

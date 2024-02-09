@@ -1,5 +1,4 @@
-
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Data, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -11,85 +10,94 @@ import { EquipmentCrudComponent } from '../equipment-crud/equipment-crud.compone
 import { CourseCrudComponent } from '../course-crud/course-crud.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DataService } from '../data.service';
+import { MatIconModule } from '@angular/material/icon';
 import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-consumable-crud',
   standalone: true,
   imports: [
-    HttpClientModule, 
-    RouterOutlet, 
+    HttpClientModule,
+    RouterOutlet,
     CommonModule,
-    AppComponent, 
-    FormsModule, 
-    RouterModule, 
-    EquipmentCrudComponent, 
-    CourseCrudComponent, 
-    NgxPaginationModule],
+    AppComponent,
+    FormsModule,
+    RouterModule,
+    EquipmentCrudComponent,
+    CourseCrudComponent,
+    NgxPaginationModule,
+    MatIconModule,
+  ],
   templateUrl: './consumable-crud.component.html',
   styleUrl: './consumable-crud.component.css',
-  providers: [
-    DatePipe
-  ]
+  providers: [DatePipe],
 })
 export class ConsumableCrudComponent {
-
-  ConsumableArray : any[] = [];
-  CourseArray : any[] = [];
+  ConsumableArray: any[] = [];
+  CourseArray: any[] = [];
   isResultLoaded = false;
   isUpdateFormActive = false;
 
-  currentID = "";
-  CourseID! :number;
-  ConsumableName : string = "";
-  Quantity ?: number;
-  ConsumableStat: string = "";
-  ExpirationDate : Date = new Date;
+  currentID = '';
+  CourseID!: number;
+  ConsumableName: string = '';
+  Quantity?: number;
+  ConsumableStat: string = '';
+  ExpirationDate: Date = new Date();
 
   SelectedCourseID: number | null = null;
 
   minDate: string;
 
-  p:number = 1;
+  p: number = 1;
   itemsPerPage: number = 7;
 
-  constructor(private http: HttpClient, private dataService: DataService, private datePipe: DatePipe){
+  constructor(
+    private http: HttpClient,
+    private dataService: DataService,
+    private datePipe: DatePipe,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
     this.getAllConsumables();
 
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
   }
 
-  ngOnInit() : void{
+  ngOnInit(): void {
     this.loadCourses();
-
   }
 
   getAllConsumables() {
-    this.http.get("http://localhost:8085/api/consumables")
-    .subscribe((resultData: any) => {
+    this.http
+      .get('http://localhost:8085/api/consumables')
+      .subscribe((resultData: any) => {
         this.isResultLoaded = true;
         console.log(resultData.data);
         this.ConsumableArray = resultData.data;
-    });
+      });
   }
 
-  register(){
+  register() {
     let bodyData = {
-      "ConsumableName" : this.ConsumableName,
-      "Quantity" : this.Quantity,
-      "ExpirationDate" : this.datePipe.transform(this.ExpirationDate, 'yyyy-MM-dd'),
-      "CourseID" : this.CourseID
+      ConsumableName: this.ConsumableName,
+      Quantity: this.Quantity,
+      ExpirationDate: this.datePipe.transform(
+        this.ExpirationDate,
+        'yyyy-MM-dd'
+      ),
+      CourseID: this.CourseID,
     };
 
-    this.http.post("http://localhost:8085/api/consumables/add", bodyData)
-    .subscribe((resultData: any) => {
-      console.log(resultData);
-      alert("Consumable Added Successfully!")
-      this.getAllConsumables();
-    });
+    this.http
+      .post('http://localhost:8085/api/consumables/add', bodyData)
+      .subscribe((resultData: any) => {
+        console.log(resultData);
+        alert('Consumable Added Successfully!');
+        this.getAllConsumables();
+      });
   }
-//-------------------------------------------------
+  //-------------------------------------------------
   // search(){
   //   this.http.get("/api/equipments/:id"+ "/" + this.currentID)
   //   .subscribe((resultData:any) => {
@@ -97,8 +105,8 @@ export class ConsumableCrudComponent {
   //     this.getAllEquipments();
   //   });
   // }
-//---------------------------------------------------
-  setUpdate (data: any){
+  //---------------------------------------------------
+  setUpdate(data: any) {
     this.ConsumableName = data.ConsumableName;
     this.Quantity = data.Quantity;
     this.ExpirationDate = data.ExpirationDate;
@@ -106,45 +114,77 @@ export class ConsumableCrudComponent {
     this.currentID = data.ConsumableID;
   }
 
-  UpdateRecords(){
+  UpdateRecords() {
     let bodyData = {
-      "ConsumableName" : this.ConsumableName,
-      "Quantity" : this.Quantity,
-      "ExpirationDate" : this.datePipe.transform(this.ExpirationDate, 'yyyy-MM-dd'),
-      "CourseID" : this.CourseID
-
+      ConsumableName: this.ConsumableName,
+      Quantity: this.Quantity,
+      ExpirationDate: this.datePipe.transform(
+        this.ExpirationDate,
+        'yyyy-MM-dd'
+      ),
+      CourseID: this.CourseID,
     };
 
-    this.http.put("http://localhost:8085/api/consumables/update" + "/" + this.currentID, bodyData)
-    .subscribe((resultData: any) =>{
-      console.log(resultData);
-      alert("Consumable Updated Successfully!")
-      this.getAllConsumables();
-    });
+    this.http
+      .put(
+        'http://localhost:8085/api/consumables/update' + '/' + this.currentID,
+        bodyData
+      )
+      .subscribe((resultData: any) => {
+        console.log(resultData);
+        alert('Consumable Updated Successfully!');
+        this.getAllConsumables();
+      });
   }
 
-  save(){
-    if(this.currentID == ''){
+  save() {
+    if (this.currentID == '') {
       this.register();
-    } else{
+    } else {
       this.UpdateRecords();
     }
   }
 
-  setDelete (data: any){
-    this.http.delete("http://localhost:8085/api/consumables/delete" + "/" + data.ConsumableID)
-    .subscribe((resultData:any) =>{
-      console.log(resultData);
-      alert("Record Deleted")
-      this.getAllConsumables();
-    });
+  setDelete(data: any) {
+    const confirmation = window.confirm(
+      'Are you sure you want to delete this record?'
+    );
+
+    if (confirmation) {
+      this.http
+        .delete(
+          'http://localhost:8085/api/consumables/delete' +
+            '/' +
+            data.ConsumableID
+        )
+        .subscribe(
+          (resultData: any) => {
+            console.log(resultData);
+            alert('Record Deleted');
+            this.getAllConsumables();
+          },
+          (error) => {
+            console.error('Error deleting record: ', error);
+          }
+        );
+    }
   }
 
-  getStatusClass(Quantity: number): string{
-    if (Quantity <= 0){
+  getStatusClass(Quantity: number): string {
+    if (Quantity <= 0) {
       return 'Not-Available';
-    } else if (Quantity < 5){
-      return 'Low-on-Stock'
+    } else if (Quantity < 5) {
+      return 'Low-on-Stock';
+    } else {
+      return 'Available';
+    }
+  }
+
+  getStatusString(Quantity: number): string {
+    if (Quantity <= 0) {
+      return 'Not Available';
+    } else if (Quantity < 5) {
+      return 'Low on Stock';
     } else {
       return 'Available';
     }
@@ -160,24 +200,30 @@ export class ConsumableCrudComponent {
     );
   }
 
-  filterConsumables(): void{
-    if (this.SelectedCourseID !== null){
-      this.dataService.getConsumablesByCourseId(this.SelectedCourseID)
-      .subscribe((response: any) => {
-        console.log(response);
-        this.ConsumableArray = response.data;
-      },
-      (error) => {
-        console.error('Error connecting to API: ', error)
-      }
-      )
-    }
+  clearFilter(): void {
+    this.SelectedCourseID = null;
+    // Manually trigger change detection to update the UI
+    this.changeDetectorRef.detectChanges();
+    this.filterConsumables();
   }
 
-  assignCourse(): void{
+  filterConsumables(): void {
     if (this.SelectedCourseID !== null) {
-      this.dataService.getConsumablesByCourseId(this.SelectedCourseID)
-        .subscribe((response: any) => {
+      this.dataService
+        .getConsumablesByCourseId(this.SelectedCourseID)
+        .subscribe(
+          (response: any) => {
+            console.log(response);
+            this.ConsumableArray = response.data;
+          },
+          (error) => {
+            console.error('Error connecting to API: ', error);
+          }
+        );
+    } else {
+      // If SelectedCourseID is null, fetch all consumables
+      this.http.get('http://localhost:8085/api/consumables').subscribe(
+        (response: any) => {
           console.log(response);
           this.ConsumableArray = response.data;
         },
@@ -185,6 +231,22 @@ export class ConsumableCrudComponent {
           console.error('Error connecting to API: ', error);
         }
       );
+    }
+  }
+
+  assignCourse(): void {
+    if (this.SelectedCourseID !== null) {
+      this.dataService
+        .getConsumablesByCourseId(this.SelectedCourseID)
+        .subscribe(
+          (response: any) => {
+            console.log(response);
+            this.ConsumableArray = response.data;
+          },
+          (error) => {
+            console.error('Error connecting to API: ', error);
+          }
+        );
     }
   }
 }

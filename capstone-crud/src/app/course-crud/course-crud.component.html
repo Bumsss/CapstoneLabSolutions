@@ -1,8 +1,9 @@
 <div class="container-course-crud">
   <div class="container-inside">
     <div class="card">
-      <p>Courses</p>
-
+      <div class="header">
+        <p>Courses</p>
+      </div>
       <form>
         <div class="container-form-group">
           <div class="form-group">
@@ -50,21 +51,47 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let CourseItem of CourseArray">
+          <tr
+            *ngFor="
+              let CourseItem of CourseArray
+                | paginate
+                  : {
+                      itemsPerPage: itemsPerPage,
+                      currentPage: p,
+                      totalItems: CourseArray.length
+                    }
+            "
+          >
             <td>{{ CourseItem.CourseID }}</td>
             <td>{{ CourseItem.CourseCode }}</td>
             <td>{{ CourseItem.CourseName }}</td>
             <td class="table-button">
-              <button type="button" (click)="setUpdate(CourseItem)">
+              <button
+                type="button"
+                class="btn btn-success"
+                (click)="setUpdate(CourseItem)"
+              >
+                <mat-icon fontIcon="edit" aria-hidden="false"> </mat-icon>
                 Edit
               </button>
-              <button type="button" (click)="setDelete(CourseItem)">
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="setDelete(CourseItem)"
+              >
+                <mat-icon fontIcon="delete" aria-hidden="false"> </mat-icon>
                 Delete
               </button>
             </td>
           </tr>
         </tbody>
       </table>
+      <div class="table-pagination-outer">
+        <pagination-controls
+          class="table-pagination-inner"
+          (pageChange)="p = $event"
+        ></pagination-controls>
+      </div>
     </div>
   </div>
 </div>

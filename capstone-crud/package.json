@@ -19,10 +19,13 @@
     "@angular/platform-browser": "^17.1.0",
     "@angular/platform-browser-dynamic": "^17.1.0",
     "@angular/router": "^17.1.0",
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.1",
     "ngx-pagination": "^6.0.3",
     "ngx-print": "^1.5.1",
+    "nodemailer": "^6.9.9",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

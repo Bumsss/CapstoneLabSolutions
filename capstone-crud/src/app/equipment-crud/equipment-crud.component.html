@@ -1,10 +1,29 @@
 <div class="container-equipment-crud">
   <div class="container-inside">
     <div class="card">
-      <p>Equipment</p>
-
+      <div class="header">
+        <p>Equipment</p>
+      </div>
       <form>
         <div class="container-form-group">
+          <div class="form-group">
+            <label>Course: </label>
+            <div class="custom-select">
+              <select
+                [(ngModel)]="CourseID"
+                class="form-control"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <option
+                  *ngFor="let CourseItem of CourseArray"
+                  [value]="CourseItem.CourseID"
+                  class="select-option"
+                >
+                  {{ CourseItem.CourseName }}
+                </option>
+              </select>
+            </div>
+          </div>
           <div class="form-group">
             <label>Equipment Name</label>
             <input
@@ -27,24 +46,6 @@
               id="Quantity"
               placeholder="Quantity"
             />
-          </div>
-          <div class="form-group">
-            <label>Course: </label>
-            <div class="custom-select">
-              <select
-                [(ngModel)]="CourseID"
-                class="form-control"
-                [ngModelOptions]="{ standalone: true }"
-              >
-                <option
-                  *ngFor="let CourseItem of CourseArray"
-                  [value]="CourseItem.CourseID"
-                  class="select-option"
-                >
-                  {{ CourseItem.CourseName }}
-                </option>
-              </select>
-            </div>
           </div>
 
           <div class="form-group">
@@ -83,6 +84,7 @@
             </option>
           </select>
           <button (click)="filterEquipments()">Filter</button>
+          <button (click)="clearFilter()">Clear</button>
         </div>
       </form>
     </div>
@@ -123,6 +125,7 @@
                 class="btn btn-success"
                 (click)="setUpdate(EquipmentItem)"
               >
+                <mat-icon fontIcon="edit" aria-hidden="false"> </mat-icon>
                 Edit
               </button>
               <button
@@ -130,6 +133,7 @@
                 class="btn btn-danger"
                 (click)="setDelete(EquipmentItem)"
               >
+                <mat-icon fontIcon="delete" aria-hidden="false"> </mat-icon>
                 Delete
               </button>
             </td>

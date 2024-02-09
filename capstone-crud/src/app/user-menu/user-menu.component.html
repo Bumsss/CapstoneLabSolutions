@@ -38,13 +38,8 @@
 
         <div class="list-last-main">
           <div class="list-last">
-            <a
-              mat-list-item
-              routerLink="/"
-              [queryParams]="{ logout: true }"
-              class="itemlink-last"
-            >
-              <mat-icon fontIcon="logout" aria-hidden="false"> </mat-icon>
+            <a mat-list-item (click)="handleLogout()" class="itemlink-last">
+              <mat-icon fontIcon="logout" aria-hidden="false"></mat-icon>
               Logout
             </a>
           </div>
