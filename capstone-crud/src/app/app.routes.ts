@@ -15,89 +15,97 @@ import { ReportsComponent } from './reports/reports.component';
 import { ConsumableReportsComponent } from './consumable-reports/consumable-reports.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { FacilityCrudComponent } from './facility-crud/facility-crud.component';
+import { UserSurveyComponent } from './user-survey/user-survey.component';
 
 export const routes: Routes = [
-    {
-        path: 'menu',
-        component: MenuComponent,
-        title: 'Dashboard',
-        canActivate: [ AuthGuard ],children: [
-
-    {
+  {
+    path: 'menu',
+    component: MenuComponent,
+    title: 'Dashboard',
+    canActivate: [AuthGuard],
+    children: [
+      {
         path: 'courses',
         component: CourseCrudComponent,
-        title: 'Home Page'
-    },
-    {
+        title: 'Home Page',
+      },
+      {
         path: 'equipments',
         component: EquipmentCrudComponent,
-        title: 'Equipments'
-    },
-    {
+        title: 'Equipments',
+      },
+      {
         path: 'consumables',
         component: ConsumableCrudComponent,
-        title: 'Consumables'
-    },
-    {
+        title: 'Consumables',
+      },
+      {
         path: 'reports',
         component: ReportsComponent,
-        title: 'Equipment Reports'
-    },
-    {
+        title: 'Equipment Reports',
+      },
+      {
         path: 'consumableReports',
         component: ConsumableReportsComponent,
-        title: 'Consumable Reports'
-    },
-    {
+        title: 'Consumable Reports',
+      },
+      {
         path: 'manageUsers',
         component: ManageUsersComponent,
-        title: 'Manage Users'
-    },
-    {
+        title: 'Manage Users',
+      },
+      {
         path: 'facilities',
         component: FacilityCrudComponent,
-        title: 'Facilities'
-    }
-    ]},
-    // ROUTING FOR USER LOGIN
-    {
-        path: 'user-menu',
-        component: UserMenuComponent,
-        title: 'Dashboard',
-        canActivate: [ AuthGuard ],children: [
-    
-    {
+        title: 'Facilities',
+      },
+    ],
+  },
+  // ROUTING FOR USER LOGIN
+  {
+    path: 'user-menu',
+    component: UserMenuComponent,
+    title: 'Dashboard',
+    canActivate: [AuthGuard],
+    children: [
+      {
         path: 'user-courses',
         component: UserCourseComponent,
-        title: 'Home Page'
-    },
-    {
+        title: 'Home Page',
+      },
+      {
         path: 'user-equipments',
         component: UserEquipmentComponent,
-        title: 'Equipments'
-    },
-    {
+        title: 'Equipments',
+      },
+      {
         path: 'user-consumables',
         component: UserConsumableComponent,
-        title: 'Consumables'
-    }
-    ]},
-    {
-        path: 'login',
-        component: LoginComponent,
-        title: 'Log in to ccjeflabsolutions'
-    },
-    { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login if no route matches
+        title: 'Consumables',
+      },
+      {
+        path: 'user-survey',
+        component: UserSurveyComponent,
+        title: 'Survey Form',
+      },
+    ],
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    title: 'Log in to ccjeflabsolutions',
+  },
+  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login if no route matches
 
-    {
-        path:'register',
-        component: RegisterComponent,
-        title: 'Sign Up'
-    },
-    {
-        path:'terms',
-        component: TermsAndConditonsComponent,
-        title: 'Terms and Conditions'
-    }
-    // { path: 'menu', component: MenuComponent, canActivate: [AuthGuard] },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    title: 'Sign Up',
+  },
+  {
+    path: 'terms',
+    component: TermsAndConditonsComponent,
+    title: 'Terms and Conditions',
+  },
+  // { path: 'menu', component: MenuComponent, canActivate: [AuthGuard] },
 ];

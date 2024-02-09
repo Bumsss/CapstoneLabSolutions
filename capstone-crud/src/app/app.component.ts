@@ -17,7 +17,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { ConsumableReportsComponent } from './consumable-reports/consumable-reports.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { FacilityCrudComponent } from './facility-crud/facility-crud.component';
-
+import { UserSurveyComponent } from './user-survey/user-survey.component';
 
 @Component({
   selector: 'app-root',
@@ -25,35 +25,29 @@ import { FacilityCrudComponent } from './facility-crud/facility-crud.component';
   imports: [
     CommonModule,
     RouterOutlet,
-    CourseCrudComponent, 
-    EquipmentCrudComponent, 
+    CourseCrudComponent,
+    EquipmentCrudComponent,
     ConsumableCrudComponent,
-    MenuComponent, 
-    RouterModule, 
-    LoginComponent, 
+    MenuComponent,
+    RouterModule,
+    LoginComponent,
     UserCourseComponent,
     UserEquipmentComponent,
     UserConsumableComponent,
-    UserMenuComponent, 
+    UserMenuComponent,
     TermsAndConditonsComponent,
     ReportsComponent,
     ConsumableReportsComponent,
     ManageUsersComponent,
-    FacilityCrudComponent
-  
+    FacilityCrudComponent,
+    UserSurveyComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'capstone-crud';
-  constructor(public authService: AuthService) 
-  {
-
-  }
+  constructor(public authService: AuthService) {}
   @HostBinding('@.disabled')
   public animationsDisabled = false;
-
-
 }
-

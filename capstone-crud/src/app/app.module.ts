@@ -10,7 +10,7 @@ import { EquipmentCrudComponentModule } from './equipment-crud/equipment-crud.mo
 import { ConsumableCrudComponent } from './consumable-crud/consumable-crud.component';
 import { MenuComponent } from './menu/menu.component';
 import { LoginComponentModule } from './login/login.module';
-import {RegisterComponentModule} from './register/register.module'
+import { RegisterComponentModule } from './register/register.module';
 import { ReportsComponentModule } from './reports/reports.module';
 import { TermsAndConditonsComponentModule } from './terms-and-conditons/terms-and-conditions.module';
 import { ConsumableReportsComponentModule } from './consumable-reports/consumable-reports.module';
@@ -22,18 +22,18 @@ import { UserCourseComponentModule } from './user-course/user-course.module';
 import { UserEquipmentComponentModule } from './user-equipment/user-equipment.module';
 import { UserConsumableComponent } from './user-consumable/user-consumable.component';
 import { UserMenuComponentModule } from './user-menu/user-menu.module';
+import { UserSurveyComponent } from './user-survey/user-survey.component';
 // Material Imports
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule} from '@angular/material/table';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatListModule} from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import {MatPaginatorModule, MatPaginator} from '@angular/material/paginator';
-import {MatSnackBar} from '@angular/material/snack-bar'
+import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
-
 
 @NgModule({
   declarations: [
@@ -52,7 +52,8 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
     ReportsComponentModule,
     ConsumableReportsComponentModule,
     ManageUsersComponentModule,
-    FacilityCrudComponentModule
+    FacilityCrudComponentModule,
+    UserSurveyComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +62,7 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
- //   BrowserAnimationsModule,
+    //   BrowserAnimationsModule,
     MatTableModule,
     MatSidenavModule,
     MatToolbarModule,
@@ -70,9 +71,9 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
     MatPaginatorModule,
     MatPaginator,
     MatSnackBar,
-    NoopAnimationsModule
+    NoopAnimationsModule,
   ],
   providers: [HttpClientModule],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
