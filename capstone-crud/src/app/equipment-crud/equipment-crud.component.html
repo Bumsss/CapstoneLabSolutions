@@ -2,7 +2,9 @@
   <div class="container-inside">
     <div class="card">
       <div class="header">
-        <p>Equipment</p>
+        <p>
+          <mat-icon fontIcon="devices" aria-hidden="false"> </mat-icon>Equipment
+        </p>
       </div>
       <form>
         <div class="container-form-group">
@@ -64,9 +66,11 @@
 
         <div class="container-button">
           <button type="button" class="btn btn-danger" (click)="register()">
+            <mat-icon fontIcon="add" aria-hidden="false"></mat-icon>
             Add
           </button>
           <button type="submit" class="btn btn-primary mt-4" (click)="save()">
+            <mat-icon fontIcon="save" aria-hidden="false"></mat-icon>
             Save
           </button>
         </div>

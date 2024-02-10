@@ -44,6 +44,10 @@
   margin: 0px 0px 0px 20px;
 }
 
+p mat-icon {
+  padding-right: 10px;
+}
+
 .container-equipment-crud .container-inside .card .container-form-group {
   display: grid;
   width: 100%;
@@ -137,21 +141,47 @@
 }
 
 .container-equipment-crud .container-inside .card .container-button {
-  display: grid;
-  grid-template-columns: 1fr 70px 10px 70px 1fr;
-  margin-top: 10px;
-  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .container-equipment-crud .container-inside .card .container-button button {
   grid-column-start: 2;
-  padding: 7px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 16px;
   border-style: none;
   background-color: var(--normal-color);
-  color: white;
+  font-weight: 500;
+  color: var(--background-color);
   border-radius: 4px;
   cursor: pointer;
   transition: 0.5s;
+  margin-top: 20px;
+}
+
+.container-equipment-crud
+  .container-inside
+  .card
+  .container-button
+  button:nth-child(2) {
+  margin-left: 10px;
+}
+
+.container-equipment-crud
+  .container-inside
+  .card
+  .container-button
+  button
+  mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
 }
 
 .container-equipment-crud
@@ -211,7 +241,7 @@
   font-weight: 500;
   padding: 10px 10px;
   margin: 50px 0px;
-  background-color: var(--normal-color);
+  background-color: var(--darkest-color);
 }
 
 .container-equipment-crud .container-inside .container-table table td {
@@ -335,14 +365,14 @@
   display: grid;
   grid-template-columns: 1fr 460px;
   margin: 0px 20px 20px 20px;
-  background: var(--normal-color);
-  height: 40px;
+  background: var(--darkest-color);
+  height: 35px;
 }
 
 .table-pagination-inner {
   grid-column: 2;
   height: 40px;
-  margin-top: -5px;
+  margin-top: -9px;
 }
 
 .table-pagination-inner ::ng-deep .ngx-pagination .current {

@@ -44,6 +44,10 @@
   margin: 0px 0px 0px 20px;
 }
 
+p mat-icon {
+  padding-right: 10px;
+}
+
 .container-course-crud .container-inside .card .container-form-group {
   display: grid;
   grid-template-columns: 250px 1fr 1fr 250px;
@@ -94,21 +98,47 @@
 }
 
 .container-course-crud .container-inside .card .container-button {
-  display: grid;
-  grid-template-columns: 1fr 100px 10px 100px 1fr;
-  margin-top: 10px;
-  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .container-course-crud .container-inside .card .container-button button {
   grid-column-start: 2;
-  padding: 7px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 7px 17px;
   border-style: none;
   background-color: var(--normal-color);
-  color: white;
+  font-weight: 500;
+  color: var(--background-color);
   border-radius: 4px;
   cursor: pointer;
   transition: 0.5s;
+  margin-top: 20px;
+}
+
+.container-course-crud
+  .container-inside
+  .card
+  .container-button
+  button:nth-child(2) {
+  margin-left: 10px;
+}
+
+.container-course-crud
+  .container-inside
+  .card
+  .container-button
+  button
+  mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
 }
 
 .container-course-crud .container-inside .card .container-button button:hover {
@@ -143,7 +173,7 @@
   font-weight: 500;
   padding: 10px 10px;
   margin: 50px 0px;
-  background-color: var(--normal-color);
+  background-color: #660066;
 }
 
 .container-course-crud .container-inside .container-table table td {
@@ -260,14 +290,14 @@
   grid-template-columns: 1fr 280px;
   margin: 0px 20px 20px 20px;
   margin-top: -20px;
-  background: var(--normal-color);
-  height: 40px;
+  background: var(--darkest-color);
+  height: 35px;
 }
 
 .table-pagination-inner {
   grid-column: 2;
   height: 40px;
-  margin-top: -5px;
+  margin-top: -9px;
 }
 
 .table-pagination-inner ::ng-deep .ngx-pagination .current {

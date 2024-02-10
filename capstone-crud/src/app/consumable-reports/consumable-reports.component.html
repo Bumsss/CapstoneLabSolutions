@@ -1,8 +1,13 @@
 <div class="container-consumable-reports">
   <div class="container-inside">
     <div class="card">
-      <p>Consumable Reports</p>
-
+      <div class="header">
+        <p>
+          <mat-icon fontIcon="assignment_turned_in" aria-hidden="false">
+          </mat-icon
+          >Consumable Reports
+        </p>
+      </div>
       <form>
         <div class="container-form-group">
           <div class="form-group">
@@ -66,12 +71,22 @@
         </div>
 
         <div class="container-button">
-          <button type="submit" class="btn btn-primary mt-4" (click)="save()">
-            Save
-          </button>
           <button type="button" class="btn btn-danger" (click)="register()">
+            <mat-icon fontIcon="add" aria-hidden="false"></mat-icon>
             Add
           </button>
+          <button type="submit" class="btn btn-primary mt-4" (click)="save()">
+            <mat-icon fontIcon="save" aria-hidden="false"></mat-icon>
+            Save
+          </button>
+        </div>
+        <div class="pdf-button">
+          <input
+            type="button"
+            value="Download PDF"
+            class="btn btn-success"
+            (click)="SavePDF()"
+          />
         </div>
       </form>
     </div>
@@ -94,7 +109,17 @@
         </thead>
         <tbody>
           <!-- | paginate: { itemsPerPage: itemsPerPage, currentPage: p, totalItems: ConsumableArray.length } -->
-          <tr *ngFor="let TransactionItem of TransactionArray">
+          <tr
+            *ngFor="
+              let TransactionItem of TransactionArray
+                | paginate
+                  : {
+                      itemsPerPage: itemsPerPage,
+                      currentPage: p,
+                      totalItems: TransactionArray.length
+                    }
+            "
+          >
             <td>{{ TransactionItem.TransactionConsumeID }}</td>
             <td>{{ getCourseName(TransactionItem.CourseID) }}</td>
             <td>{{ getConsumableName(TransactionItem.ConsumableID) }}</td>
@@ -111,6 +136,7 @@
                 class="btn btn-success"
                 (click)="setUpdate(TransactionItem)"
               >
+                <mat-icon fontIcon="edit" aria-hidden="false"></mat-icon>
                 Edit
               </button>
               <button
@@ -118,19 +144,18 @@
                 class="btn btn-danger"
                 (click)="setDelete(TransactionItem)"
               >
+                <mat-icon fontIcon="delete" aria-hidden="false"></mat-icon>
                 Delete
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <div class="pdf-button">
-        <input
-          type="button"
-          value="Download PDF"
-          class="btn btn-success"
-          (click)="SavePDF()"
-        />
+      <div class="table-pagination-outer">
+        <pagination-controls
+          class="table-pagination-inner"
+          (pageChange)="p = $event"
+        ></pagination-controls>
       </div>
     </div>
   </div>

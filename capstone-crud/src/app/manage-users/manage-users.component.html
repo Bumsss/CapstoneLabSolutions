@@ -1,7 +1,12 @@
 <div class="container-manage-users">
   <div class="container-inside">
     <div class="card">
-      <p>Users</p>
+      <div class="header">
+        <p>
+          <mat-icon fontIcon="manage_accounts" aria-hidden="false"> </mat-icon
+          >Users
+        </p>
+      </div>
     </div>
 
     <div class="container-table">
@@ -50,12 +55,23 @@
               </button>
             </td>
             <td class="table-button">
-              <button type="button" (click)="setUpdate(user)">Edit</button>
-              <button type="button" (click)="deleteUser(user)">Delete</button>
+              <button type="button" (click)="setUpdate(user)">
+                <mat-icon fontIcon="edit" aria-hidden="false"></mat-icon>Edit
+              </button>
+              <button type="button" (click)="deleteUser(user)">
+                <mat-icon fontIcon="delete" aria-hidden="false"></mat-icon
+                >Delete
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
+      <div class="table-pagination-outer">
+        <pagination-controls
+          class="table-pagination-inner"
+          (pageChange)="p = $event"
+        ></pagination-controls>
+      </div>
       <h1 *ngIf="!isResultLoaded">Loading.................</h1>
     </div>
   </div>
