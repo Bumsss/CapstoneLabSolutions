@@ -59,9 +59,20 @@ p mat-icon {
   .container-inside
   .card
   .container-form-group
-  .form-group:nth-child(1) {
-  grid-column-start: 2;
+  .custom-select {
   margin: auto;
+  display: block;
+
+  grid-column-start: 2;
+}
+
+.container-consumable-reports
+  .container-inside
+  .card
+  .container-form-group
+  .custom-select
+  select {
+  width: 100%;
 }
 
 .container-consumable-reports
@@ -416,3 +427,42 @@ p mat-icon {
   color: var(--background-color);
 }
 /* End of PDF BUTTON DOWNLOAD format */
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    119,
+    119,
+    119,
+    0.6
+  ); /* Adjust the background color and opacity */
+  z-index: -0;
+  margin-top: 120px;
+  margin-left: 100px;
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid var(--normal-color); /* Loader color */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-top: -300px;
+  margin-left: -90px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

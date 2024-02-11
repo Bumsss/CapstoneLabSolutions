@@ -6,11 +6,15 @@
           <mat-icon fontIcon="devices" aria-hidden="false"> </mat-icon>Equipment
         </p>
       </div>
+      <div class="loader-container" *ngIf="!isResultLoaded">
+        <div class="loader"></div>
+      </div>
       <form>
         <div class="container-form-group">
           <div class="form-group">
-            <label>Course: </label>
             <div class="custom-select">
+              <label>Course: </label>
+
               <select
                 [(ngModel)]="CourseID"
                 class="form-control"
@@ -96,7 +100,6 @@
     <div class="container-table">
       <table cellspacing="0">
         <thead>
-          <h1 *ngIf="!isResultLoaded">Loading.................</h1>
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Equipment Name</th>

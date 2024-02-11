@@ -3,8 +3,12 @@
     <div class="card">
       <div class="header">
         <p>
-          <mat-icon fontIcon="book" aria-hidden="false"> </mat-icon>Facilities
+          <mat-icon fontIcon="business" aria-hidden="false"> </mat-icon
+          >Facilities
         </p>
+      </div>
+      <div class="loader-container" *ngIf="!isResultLoaded">
+        <div class="loader"></div>
       </div>
       <form>
         <div class="container-form-group">
@@ -49,7 +53,6 @@
     <div class="container-table">
       <table cellspacing="0">
         <thead>
-          <h1 *ngIf="!isResultLoaded">Loading.................</h1>
           <tr>
             <th scope="col">Room ID</th>
             <th scope="col">Room</th>

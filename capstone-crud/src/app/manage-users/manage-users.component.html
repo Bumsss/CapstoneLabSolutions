@@ -1,16 +1,21 @@
 <div class="container-manage-users">
   <div class="container-inside">
     <div class="card">
-      <div class="header">
-        <p>
-          <mat-icon fontIcon="manage_accounts" aria-hidden="false"> </mat-icon
-          >Users
-        </p>
-      </div>
+      <form>
+        <div class="header">
+          <p>
+            <mat-icon fontIcon="manage_accounts" aria-hidden="false"> </mat-icon
+            >Users
+          </p>
+        </div>
+        <div class="loader-container" *ngIf="!isResultLoaded">
+          <div class="loader"></div>
+        </div>
+      </form>
     </div>
 
     <div class="container-table">
-      <table cellspacing="0" *ngIf="isResultLoaded">
+      <table cellspacing="0">
         <thead>
           <tr>
             <th scope="col">Last Name</th>
@@ -72,7 +77,6 @@
           (pageChange)="p = $event"
         ></pagination-controls>
       </div>
-      <h1 *ngIf="!isResultLoaded">Loading.................</h1>
     </div>
   </div>
 </div>
