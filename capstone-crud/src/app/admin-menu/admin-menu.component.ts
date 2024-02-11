@@ -4,10 +4,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { LoginComponent } from '../login/login.component';
 
 @Component({
-  selector: 'app-menu',
+  selector: 'app-admin-menu',
   standalone: true,
   imports: [
     RouterModule,
@@ -16,10 +15,9 @@ import { LoginComponent } from '../login/login.component';
     MatIconModule,
     MatListModule,
   ],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css',
-  providers: [LoginComponent],
+  templateUrl: './admin-menu.component.html',
+  styleUrl: './admin-menu.component.css',
 })
-export class MenuComponent {
+export class AdminMenuComponent {
   imageUrl: string = '/assets/ccjef_logo.png';
 }

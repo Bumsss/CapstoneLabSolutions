@@ -3,8 +3,49 @@ const bodyParser = require("body-parser");
 const router = express.Router();
 const mysql = require("mysql");
 const server = express();
+
 const nodemailer = require("nodemailer");
+
 // const bcrypt = require("bcrypt");
+
+// EMAIL FUNCTION
+// Define your route for sending emails
+server.use(express.json());
+server.post("/send-email", (req, res) => {
+  const { content } = req.body;
+
+  // Create a transporter using nodemailer
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    service: "gmail",
+    auth: {
+      user: "labsolutionsccjef@gmail.com", // Your email address
+      pass: "jqro oblg gkme qfdx", // Your email password or app-specific password if using Gmail
+    },
+  });
+
+  // Define the email options
+  const mailOptions = {
+    from: "labsolutionsccjef@gmail.com",
+    to: "allenbumanlag@gmail.com", // Email address to send the email to
+    subject: "Consumables Status Alert",
+    text: content,
+  };
+
+  // Send the email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email:", error);
+      res.status(500).send("Error sending email");
+    } else {
+      console.log("Email sent:", info.response);
+      res.status(200).send("Email sent successfully");
+    }
+  });
+});
+
+// -----------------------------
 
 server.use(bodyParser.json());
 const cors = require("cors");
@@ -31,7 +72,6 @@ server.listen(8085, function check(error) {
   if (error) console.log("Error...");
   else console.log("Started... 8085");
 });
-
 //------------------------------------------- API FOR COURSES ------------------------------------------------
 server.get("/api/courses", (req, res) => {
   var sql = "SELECT * FROM tblCourses";
@@ -268,6 +308,37 @@ server.get("/api/users", (req, res) => {
     }
   });
 });
+//SEARCH USERS BASED ON COURSE ID
+server.get("/api/users/:id", (req, res) => {
+  var AccountID = req.params.id;
+  var sql = "SELECT * FROM tblAccount WHERE AccountID=" + AccountID;
+  db.query(sql, function (error, result) {
+    if (error) {
+      console.log("Error Connecting to DB");
+    } else {
+      res.send({ status: true, data: result });
+    }
+  });
+});
+
+server.get("/api/users/check/:studentNum", (req, res) => {
+  var studentNum = req.params.studentNum;
+  var sql = "SELECT * FROM tblAccount WHERE StudentNum='" + studentNum + "'";
+  db.query(sql, function (error, result) {
+    if (error) {
+      console.log("Error Checking Student Number");
+      res
+        .status(500)
+        .send({ status: false, message: "Error checking student number" });
+    } else {
+      if (result.length > 0) {
+        res.send({ status: true, isRegistered: true });
+      } else {
+        res.send({ status: true, isRegistered: false });
+      }
+    }
+  });
+});
 
 //ADD USERS
 server.post("/api/users/add", (req, res) => {
@@ -305,6 +376,12 @@ server.put("/api/users/update/:id", (req, res) => {
     req.body.StudentNum +
     "', isActive='" +
     req.body.isActive +
+    "', StudentNum='" +
+    req.body.StudentNum +
+    "', Password='" +
+    req.body.Password +
+    "', AccessLevelID='" +
+    req.body.AccessLevelID +
     "' WHERE AccountID=" +
     req.params.id;
 
@@ -469,7 +546,7 @@ server.put("/api/consumableTrans/update/:id", (req, res) => {
 // DELETE A REPORT
 server.delete("/api/consumableTrans/delete/:id", (req, res) => {
   let sql =
-    "DELETE FROM tblTransactionEquipment where TransactionConsumeID=" +
+    "DELETE FROM tblTransactionConsumable where TransactionConsumeID=" +
     req.params.id +
     "";
   let query = db.query(sql, (error) => {
@@ -480,7 +557,6 @@ server.delete("/api/consumableTrans/delete/:id", (req, res) => {
     }
   });
 });
-
 //---------------------------------------------------------------------------------------
 // -------------------------------- API FOR FACILITIES ----------------------------------
 
@@ -535,7 +611,6 @@ server.put("/api/room/update/:id", (req, res) => {
     req.body.RoomStatus +
     "' WHERE RoomID=" +
     req.params.id;
-
   let a = db.query(sql, (error, result) => {
     if (error) {
       console.error("Error updating facility:", error);
@@ -622,34 +697,6 @@ server.delete("/api/access/delete/:id", (req, res) => {
       res.send({ status: false, message: "Access Delete Failed!" });
     } else {
       res.send({ status: true, message: "Access Deleted Successfully!" });
-    }
-  });
-});
-
-// EMAIL
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "allenbumanlagbackup@gmail.com",
-    pass: "allenboss03rocks",
-  },
-});
-
-server.post("/send-email", (req, res) => {
-  const mailOptions = {
-    from: "allenbumanlagbackup@gmail.com",
-    to: "allenbumanlag@gmail.com",
-    subject: "Low Stock Alert",
-    text: "Stocks are low. Please check the inventory.",
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error(error);
-      res.status(500).send(error.toString());
-    } else {
-      console.log("Email sent: " + info.response);
-      res.status(200).send("Email sent successfully");
     }
   });
 });

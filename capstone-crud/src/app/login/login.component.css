@@ -1,3 +1,11 @@
+body {
+  height: 100%;
+}
+
+.mat-simple-snackbar {
+  justify-content: center !important;
+}
+
 .container {
   display: flex;
   align-items: center;

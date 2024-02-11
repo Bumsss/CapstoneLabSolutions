@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { CourseCrudComponent } from './course-crud/course-crud.component';
 import { EquipmentCrudComponent } from './equipment-crud/equipment-crud.component';
 import { ConsumableCrudComponent } from './consumable-crud/consumable-crud.component';
@@ -15,7 +15,9 @@ import { ReportsComponent } from './reports/reports.component';
 import { ConsumableReportsComponent } from './consumable-reports/consumable-reports.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { FacilityCrudComponent } from './facility-crud/facility-crud.component';
-import { UserSurveyComponent } from './user-survey/user-survey.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AdminMenuComponent } from './admin-menu/admin-menu.component';
+import { AdminManageUsersComponent } from './admin-manage-users/admin-manage-users.component';
 
 export const routes: Routes = [
   {
@@ -59,6 +61,11 @@ export const routes: Routes = [
         component: FacilityCrudComponent,
         title: 'Facilities',
       },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        title: 'User Profile',
+      },
     ],
   },
   // ROUTING FOR USER LOGIN
@@ -83,17 +90,63 @@ export const routes: Routes = [
         component: UserConsumableComponent,
         title: 'Consumables',
       },
+    ],
+  },
+
+  // ROUTING FOR ADMIN LOGIN
+  {
+    path: 'admin-menu',
+    component: AdminMenuComponent,
+    title: 'Dashboard',
+    canActivate: [AuthGuard],
+    children: [
       {
-        path: 'user-survey',
-        component: UserSurveyComponent,
-        title: 'Survey Form',
+        path: 'courses',
+        component: CourseCrudComponent,
+        title: 'Home Page',
+      },
+      {
+        path: 'equipments',
+        component: EquipmentCrudComponent,
+        title: 'Equipments',
+      },
+      {
+        path: 'consumables',
+        component: ConsumableCrudComponent,
+        title: 'Consumables',
+      },
+      {
+        path: 'reports',
+        component: ReportsComponent,
+        title: 'Equipment Reports',
+      },
+      {
+        path: 'consumableReports',
+        component: ConsumableReportsComponent,
+        title: 'Consumable Reports',
+      },
+      {
+        path: 'adminManageUsers',
+        component: AdminManageUsersComponent,
+        title: 'Manage Users',
+      },
+      {
+        path: 'facilities',
+        component: FacilityCrudComponent,
+        title: 'Facilities',
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        title: 'User Profile',
       },
     ],
   },
+
   {
     path: 'login',
     component: LoginComponent,
-    title: 'Log in to ccjeflabsolutions',
+    title: 'Login',
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login if no route matches
 

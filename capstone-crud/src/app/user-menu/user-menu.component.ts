@@ -4,7 +4,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-user-menu',
@@ -18,13 +17,7 @@ import { LoginComponent } from '../login/login.component';
   ],
   templateUrl: './user-menu.component.html',
   styleUrl: './user-menu.component.css',
-  providers: [LoginComponent],
 })
 export class UserMenuComponent {
   imageUrl: string = '/assets/ccjef_logo.png';
-
-  constructor(private loginComponent: LoginComponent) {}
-  handleLogout() {
-    this.loginComponent.logout(); // Call logout from LoginComponent
-  }
 }

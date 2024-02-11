@@ -2,29 +2,19 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
-  selector: 'app-manage-users',
+  selector: 'app-admin-manage-users',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatIconModule,
-    NgxPaginationModule,
-  ],
-  templateUrl: './manage-users.component.html',
-  styleUrl: './manage-users.component.css',
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  templateUrl: './admin-manage-users.component.html',
+  styleUrl: './admin-manage-users.component.css',
 })
-export class ManageUsersComponent {
+export class AdminManageUsersComponent {
   users: any[] = [];
   AccessLevels: any[] = [];
   isResultLoaded = false;
   isUpdateFormActive = false;
-  p: number = 1;
-  itemsPerPage: number = 7;
 
   currentUser: any = {
     UserName: '',
@@ -47,24 +37,23 @@ export class ManageUsersComponent {
       .get('http://localhost:8085/api/users')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-        console.log(resultData.data);
         this.users = resultData.data;
       });
   }
 
-  addUser() {
+  loadAccessLevels() {
     this.http
-      .post('http://localhost:8085/api/users/add', this.currentUser)
+      .get('http://localhost:8085/api/access')
       .subscribe((resultData: any) => {
-        console.log(resultData);
-        alert('User Added Successfully!');
-        this.getAllUsers();
+        this.AccessLevels = resultData.data;
       });
   }
-  setUpdate(user: any) {
-    // Set currentUser to the selected user for editing
-    this.currentUser = { ...user }; // Copy user object to prevent reference mutation
-    this.isUpdateFormActive = true;
+
+  getAccessLevelName(AccessLevelID: number): string {
+    const accessLevel = this.AccessLevels.find(
+      (level) => level.AccessLevelID === AccessLevelID
+    );
+    return accessLevel ? accessLevel.AccessName : '';
   }
 
   toggleActive(currentUser: any) {
@@ -77,6 +66,7 @@ export class ManageUsersComponent {
       );
     }
   }
+
   UpdateRecords(currentUser: any) {
     let bodyData = {
       UserName: currentUser.UserName,
@@ -107,6 +97,22 @@ export class ManageUsersComponent {
     } else {
       this.UpdateRecords(this.currentUser);
     }
+  }
+
+  addUser() {
+    this.http
+      .post('http://localhost:8085/api/users/add', this.currentUser)
+      .subscribe((resultData: any) => {
+        console.log(resultData);
+        alert('User Added Successfully!');
+        this.getAllUsers();
+      });
+  }
+
+  setUpdate(user: any) {
+    // Set currentUser to the selected user for editing
+    this.currentUser = { ...user }; // Copy user object to prevent reference mutation
+    this.isUpdateFormActive = true;
   }
 
   deleteUser(user: any) {
@@ -140,17 +146,5 @@ export class ManageUsersComponent {
       isActive: false,
     };
     this.isUpdateFormActive = false;
-  }
-  loadAccessLevels() {
-    this.http
-      .get('http://localhost:8085/api/access')
-      .subscribe((resultData: any) => {
-        this.isResultLoaded = true;
-        console.log(resultData.data);
-        this.AccessLevels = resultData.data;
-      });
-  }
-  updateAccessLevel(currentUser: any) {
-    this.UpdateRecords(currentUser); // Call your existing method to update the user's record
   }
 }

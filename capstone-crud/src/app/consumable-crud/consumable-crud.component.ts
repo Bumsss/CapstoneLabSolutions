@@ -52,6 +52,8 @@ export class ConsumableCrudComponent {
   p: number = 1;
   itemsPerPage: number = 7;
 
+  private emailSent = false;
+
   constructor(
     private http: HttpClient,
     private dataService: DataService,
@@ -171,13 +173,26 @@ export class ConsumableCrudComponent {
   }
 
   getStatusClass(Quantity: number): string {
+    let status = '';
+
     if (Quantity <= 0) {
-      return 'Not-Available';
+      status = 'Not-Available';
     } else if (Quantity < 5) {
-      return 'Low-on-Stock';
+      status = 'Low-on-Stock';
     } else {
-      return 'Available';
+      status = 'Available';
     }
+
+    // Check if email should be sent and if it hasn't been sent already
+    if (
+      (status === 'Low-on-Stock' || status === 'Not-Available') &&
+      !this.emailSent
+    ) {
+      this.sendEmailOnLowStockOrNotAvailable(); // Trigger email sending
+      this.emailSent = true; // Set emailSent flag to true
+    }
+
+    return status;
   }
 
   getStatusString(Quantity: number): string {
@@ -189,6 +204,54 @@ export class ConsumableCrudComponent {
       return 'Available';
     }
   }
+
+  sendEmailOnLowStockOrNotAvailable() {
+    const lowStockItems = this.ConsumableArray.filter(
+      (item) => item.Quantity < 5
+    );
+    const notAvailableItems = this.ConsumableArray.filter(
+      (item) => item.Quantity <= 0
+    );
+
+    // Check if there are any low stock items or items that are not available
+    if (
+      (lowStockItems.length > 0 || notAvailableItems.length > 0) &&
+      !this.emailSent
+    ) {
+      // Construct the email content
+      let emailContent = `Consumables Status Alert:\n\n`;
+
+      if (lowStockItems.length > 0) {
+        emailContent += `Low on Stock:\n${this.formatItems(lowStockItems)}\n\n`;
+      }
+
+      if (notAvailableItems.length > 0) {
+        emailContent += `Not Available:\n${this.formatItems(
+          notAvailableItems
+        )}\n\n`;
+      }
+
+      // Now, make an HTTP request to your server-side endpoint to send the email
+      this.http
+        .post('http://localhost:8085/send-email', { content: emailContent })
+        .subscribe(
+          (response) => {
+            console.log('Email sent successfully!', response);
+            this.emailSent = true; // Set the flag to true after the email is sent
+          },
+          (error) => {
+            console.error('Error sending email:', error);
+          }
+        );
+    }
+  }
+
+  formatItems(items: any[]): string {
+    return items
+      .map((item) => `ID: ${item.ConsumableID}, Name: ${item.ConsumableName}`)
+      .join('\n');
+  }
+
   loadCourses(): void {
     this.dataService.getCourses().subscribe(
       (response: any) => {
