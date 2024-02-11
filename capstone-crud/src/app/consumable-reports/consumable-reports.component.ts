@@ -191,7 +191,7 @@ export class ConsumableReportsComponent {
       .delete(
         'http://localhost:8085/api/consumableTrans/delete' +
           '/' +
-          data.TransactionEquipID
+          data.TransactionConsumeID
       )
       .subscribe((resultData: any) => {
         console.log(resultData);
