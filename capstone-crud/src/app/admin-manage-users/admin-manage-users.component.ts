@@ -2,11 +2,19 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-admin-manage-users',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgxPaginationModule,
+    MatIconModule,
+  ],
   templateUrl: './admin-manage-users.component.html',
   styleUrl: './admin-manage-users.component.css',
 })
@@ -15,7 +23,8 @@ export class AdminManageUsersComponent {
   AccessLevels: any[] = [];
   isResultLoaded = false;
   isUpdateFormActive = false;
-
+  p: number = 1;
+  itemsPerPage: number = 7;
   currentUser: any = {
     UserName: '',
     Password: '',

@@ -4,12 +4,20 @@ import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { DatePipe } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatIconModule,
+    NgxPaginationModule,
+  ],
   standalone: true,
   providers: [DatePipe],
 })
@@ -29,7 +37,8 @@ export class ProfileComponent implements OnInit {
   userArray: any[] = [];
   isResultLoaded = false;
   isEditMode = false;
-
+  p: number = 1;
+  itemsPerPage: number = 7;
   LastName: string = '';
   FirstName: string = '';
   Birthdate: string = '';
@@ -112,8 +121,9 @@ export class ProfileComponent implements OnInit {
   setUpdate(currentUser: any) {
     this.LastName = currentUser.LastName;
     this.FirstName = currentUser.FirstName;
-    this.Birthdate =
-      this.datePipe.transform(currentUser.Birthdate, 'dd-MM-yyyy') || '';
+    const birthdateDate = new Date(currentUser.Birthdate);
+    this.Birthdate = this.datePipe.transform(birthdateDate, 'yyyy-MM-dd') || '';
+
     this.StudentNum = currentUser.StudentNum;
     this.UserName = currentUser.UserName;
     this.Password = currentUser.Password;
@@ -171,7 +181,7 @@ export class ProfileComponent implements OnInit {
         this.LastName = userData.LastName || '';
         this.FirstName = userData.FirstName || '';
         this.Birthdate =
-          this.datePipe.transform(userData.Birthdate, 'dd-MM-yyyy') || '';
+          this.datePipe.transform(userData.Birthdate, 'yyyy-MM-dd') || '';
         this.StudentNum = userData.StudentNum || '';
         this.UserName = userData.UserName || '';
         this.Password = userData.Password || '';

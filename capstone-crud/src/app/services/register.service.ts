@@ -11,16 +11,22 @@ export class RegisterService {
 
   constructor(private http: HttpClient) {}
 
-  register(UserName: string, Password: string, FirstName: string, LastName: string, Birthdate: string, StudentNum: number): Observable<any> {
+  register(
+    UserName: string,
+    Password: string,
+    FirstName: string,
+    LastName: string,
+    Birthdate: string,
+    StudentNum: number
+  ): Observable<any> {
     const newUser = {
       UserName: UserName,
       Password: Password,
       FirstName: FirstName,
       LastName: LastName,
       Birthdate: Birthdate,
-      StudentNum: StudentNum
+      StudentNum: StudentNum,
     };
-    
 
     // Make an HTTP post request to register the new user
     return this.http.post(`${this.apiUrl}/api/users/add`, newUser).pipe(
@@ -30,5 +36,16 @@ export class RegisterService {
         return throwError('Something went wrong. Please try again later.');
       })
     );
+  }
+
+  checkStudentNumber(studentNum: number): Observable<boolean> {
+    return this.http
+      .get<boolean>(`${this.apiUrl}/api/users/check/${studentNum}`)
+      .pipe(
+        catchError((error) => {
+          console.error('Error checking student number:', error);
+          return throwError('Something went wrong. Please try again later.');
+        })
+      );
   }
 }

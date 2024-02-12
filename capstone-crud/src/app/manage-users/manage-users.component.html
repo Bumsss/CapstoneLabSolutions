@@ -29,7 +29,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let user of users">
+          <tr
+            *ngFor="
+              let user of users
+                | paginate
+                  : {
+                      itemsPerPage: itemsPerPage,
+                      currentPage: p,
+                      totalItems: users.length
+                    }
+            "
+          >
             <td>{{ user.LastName }}</td>
             <td>{{ user.FirstName }}</td>
             <td>{{ user.StudentNum }}</td>
