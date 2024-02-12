@@ -52,16 +52,29 @@ p mat-icon {
 
 /* Profile Header */
 .profile-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   margin: auto;
   padding: 30px 0px;
 }
 
 .profile-icon img {
   width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 40px;
 }
 
 .profile-icon p {
   text-align: center;
+  margin: 0;
+}
+
+.profile-icon p:nth-child(3) {
+  padding-top: 10px;
 }
 
 /* Profile Edit */
