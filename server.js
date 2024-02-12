@@ -327,8 +327,8 @@ server.get("/api/users/:id", (req, res) => {
 });
 
 server.get("/api/users/check/:studentNum", (req, res) => {
-  var studentNum = req.params.studentNum;
-  var sql = "SELECT * FROM tblAccount WHERE StudentNum='" + studentNum + "'";
+  var StudentNum = req.params.studentNum;
+  var sql = "SELECT * FROM tblAccount WHERE StudentNum='" + StudentNum + "'";
   db.query(sql, function (error, result) {
     if (error) {
       console.log("Error Checking Student Number");
@@ -582,7 +582,6 @@ server.post("/api/room/add", (req, res) => {
     RoomID: req.body.RoomID,
     RoomName: req.body.RoomName,
     RoomDesc: req.body.RoomDesc,
-    RoomStatus: req.body.RoomStatus,
   };
   let sql = "INSERT INTO tblRooms SET ?";
   db.query(sql, details, (error) => {
