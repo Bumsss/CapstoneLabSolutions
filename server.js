@@ -6,8 +6,39 @@ const server = express();
 
 const nodemailer = require("nodemailer");
 
-// const bcrypt = require("bcrypt");
+server.use(bodyParser.json());
+const cors = require("cors");
 
+server.use(cors());
+// number of iterations or rounds for generating salt
+// const saltRounds = 10;
+
+// Established the database connection
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "inventorydb",
+});
+
+db.connect(function (error) {
+  if (error) console.log("Error Connecting to DB");
+  else console.log("Successfully Connected to DB");
+});
+server.use(
+  cors({
+    origin: "http://localhost:4200",
+    methods: "POST",
+  })
+);
+
+// Establish the Port
+server.listen(8085, function check(error) {
+  if (error) console.log("Error...");
+  else console.log("Started... 8085");
+});
+// const bcrypt = require("bcrypt");
+// -----------------------------------------
 // EMAIL FUNCTION
 // Define your route for sending emails
 server.use(express.json());
@@ -47,36 +78,6 @@ server.post("/send-email", (req, res) => {
 
 // -----------------------------
 
-server.use(bodyParser.json());
-const cors = require("cors");
-
-server.use(cors());
-// number of iterations or rounds for generating salt
-// const saltRounds = 10;
-
-// Established the database connection
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "inventorydb",
-});
-
-db.connect(function (error) {
-  if (error) console.log("Error Connecting to DB");
-  else console.log("Successfully Connected to DB");
-});
-server.use(
-  cors({
-    origin: "http://localhost:4200",
-  })
-);
-
-// Establish the Port
-server.listen(8085, function check(error) {
-  if (error) console.log("Error...");
-  else console.log("Started... 8085");
-});
 //------------------------------------------- API FOR COURSES ------------------------------------------------
 server.get("/api/courses", (req, res) => {
   var sql = "SELECT * FROM tblCourses";
@@ -197,9 +198,11 @@ server.put("/api/equipments/update/:id", (req, res) => {
     req.body.Quantity +
     "', CourseID='" +
     req.body.CourseID +
-    "', CalibrationSchedule='" +
-    req.body.CalibrationSchedule + // Ensure the received date is properly formatted
-    "' WHERE EquipmentID=" +
+    "', CalibrationSchedule=" +
+    (req.body.CalibrationSchedule
+      ? "'" + req.body.CalibrationSchedule + "'"
+      : "NULL") + // Ensure the received date is properly formatted
+    " WHERE EquipmentID=" +
     req.params.id;
   let a = db.query(sql, (error, result) => {
     if (error) {
@@ -274,20 +277,21 @@ server.put("/api/consumables/update/:id", (req, res) => {
     req.body.Quantity +
     "', CourseID='" +
     req.body.CourseID +
-    "', ExpirationDate='" +
-    req.body.ExpirationDate +
-    "' WHERE ConsumableID=" +
+    "', ExpirationDate=" +
+    (req.body.ExpirationDate ? "'" + req.body.ExpirationDate + "'" : "NULL") +
+    " WHERE ConsumableID=" +
     req.params.id;
 
   let a = db.query(sql, (error, result) => {
     if (error) {
-      console.error("Error updating course:", error);
+      console.error("Error updating consumable:", error);
       res.send({ status: false, message: "Consumable Update Failed!" });
     } else {
       res.send({ status: true, message: "Consumable Update Success!" });
     }
   });
 });
+
 // DELETE A RECORD
 server.delete("/api/consumables/delete/:id", (req, res) => {
   let sql =
@@ -327,8 +331,8 @@ server.get("/api/users/:id", (req, res) => {
 });
 
 server.get("/api/users/check/:studentNum", (req, res) => {
-  var StudentNum = req.params.studentNum;
-  var sql = "SELECT * FROM tblAccount WHERE StudentNum='" + StudentNum + "'";
+  var studentNum = req.params.studentNum;
+  var sql = "SELECT * FROM tblAccount WHERE StudentNum='" + studentNum + "'";
   db.query(sql, function (error, result) {
     if (error) {
       console.log("Error Checking Student Number");
@@ -582,6 +586,7 @@ server.post("/api/room/add", (req, res) => {
     RoomID: req.body.RoomID,
     RoomName: req.body.RoomName,
     RoomDesc: req.body.RoomDesc,
+    // RoomStatus: req.body.RoomStatus
   };
   let sql = "INSERT INTO tblRooms SET ?";
   db.query(sql, details, (error) => {
