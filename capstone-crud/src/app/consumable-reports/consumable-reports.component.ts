@@ -53,7 +53,7 @@ export class ConsumableReportsComponent {
   itemsPerPage: number = 7;
 
   @ViewChild('content') content!: ElementRef;
-  // TransactionConsumeID: any;
+
   public SavePDF(): void {
     const content = this.content.nativeElement;
     const doc = new jsPDF();
@@ -61,13 +61,12 @@ export class ConsumableReportsComponent {
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().split('T')[0];
 
-    doc.text(title, 14, 10); // Adjust coordinates for title
-    doc.text(`Generated on: ${formattedDate}`, 14, 18); // Adjust coordinates for date
+    doc.text(title, 14, 10);
+    doc.text(`Generated on: ${formattedDate}`, 14, 18);
 
     autoTable(doc, {
       html: content,
       margin: { top: 30 },
-      // other options...
     });
 
     doc.save('reports.pdf');
@@ -100,7 +99,7 @@ export class ConsumableReportsComponent {
       .get('http://localhost:8085/api/consumableTrans/')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-        console.log(resultData.data);
+
         this.TransactionArray = resultData.data;
         this.TransactionArray.forEach((transaction: any) => {
           transaction.CourseName = this.getCourseName(transaction.CourseID);
@@ -125,13 +124,11 @@ export class ConsumableReportsComponent {
       AccountID: this.AccountID,
       Quantity: this.Quantity,
       DateCreated: this.datePipe.transform(this.DateCreated, 'yyyy-MM-dd'),
-      // "DateReturned": this.datePipe.transform(this.DateReturned, 'yyyy-MM-dd'),
     };
 
     this.http
       .post('http://localhost:8085/api/consumableTrans/add', bodyData)
       .subscribe((resultData: any) => {
-        console.log(resultData);
         alert('Transaction Created!');
         this.fetchTransactions();
         this.clearDropdownSelections();
@@ -142,9 +139,8 @@ export class ConsumableReportsComponent {
     this.ConsumableID = null;
     this.AccountID = null;
     this.Quantity = null;
-    // this.DateReturned = null;
   }
-  // -------------------------------------
+
   setUpdate(data: any) {
     this.TransactionConsumeID = data.TransactionConsumeID;
     this.CourseID = data.CourseID;
@@ -163,7 +159,6 @@ export class ConsumableReportsComponent {
       AccountID: this.AccountID,
       Quantity: this.Quantity,
       DateCreated: this.datePipe.transform(this.DateCreated, 'yyyy-MM-dd'),
-      // "DateReturned": this.datePipe.transform(this.DateReturned, 'yyyy-MM-dd'),
     };
     this.http
       .put(
@@ -173,7 +168,6 @@ export class ConsumableReportsComponent {
         bodyData
       )
       .subscribe((resultData: any) => {
-        console.log(resultData);
         alert('Transaction Updated Successfully!');
         this.fetchTransactions();
       });
@@ -200,7 +194,6 @@ export class ConsumableReportsComponent {
         )
         .subscribe(
           (resultData: any) => {
-            console.log(resultData);
             alert('Record Deleted');
             this.fetchTransactions();
           },
@@ -210,11 +203,10 @@ export class ConsumableReportsComponent {
         );
     }
   }
-  // get courses for dropdown
+
   loadCourses(): void {
     this.ConsumableReportService.getCourses().subscribe(
       (response: any) => {
-        console.log('Courses:', response);
         this.CourseArray = response.data;
       },
       (error) => {
@@ -222,27 +214,15 @@ export class ConsumableReportsComponent {
       }
     );
   }
-  // onCourseChange(): void {
-  //   this.reportService.getConsumablessByCourseId(this.CourseID).subscribe(
-  //     (response: any) => {
-  //       this.EquipmentArray = response.data; // Assuming the response has a 'data' property
-  //       this.cdr.detectChanges(); // Manually trigger change detection
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching equipments by course:', error);
-  //     }
-  //   );
-  // }
+
   onCourseChange(): void {
     if (this.CourseID) {
-      // Check if a course is selected
       this.ConsumableReportService.getConsumablesByCourseId(
         this.CourseID
       ).subscribe(
         (response: any) => {
-          // Assign the equipment for the selected course to a separate array
           this.ConsumableArrayForSelectedCourse = response.data;
-          this.cdr.detectChanges(); // Manually trigger change detection if needed
+          this.cdr.detectChanges();
         },
         (error) => {
           console.error('Error fetching consumables by course:', error);
@@ -250,7 +230,7 @@ export class ConsumableReportsComponent {
       );
     }
   }
-  // get equipments for dropdown
+
   loadConsumables(): void {
     this.ConsumableReportService.getConsumables().subscribe(
       (response: any) => {
@@ -261,7 +241,7 @@ export class ConsumableReportsComponent {
       }
     );
   }
-  // get users for dropdown
+
   loadUsers(): void {
     this.ConsumableReportService.getUsers().subscribe(
       (response: any) => {
@@ -301,16 +281,4 @@ export class ConsumableReportsComponent {
         }
       : null;
   }
-  // downloadPDF(): void {
-  //   const pdfElement = document.getElementById('pdf-content'); // replace 'pdf-content' with the ID of the element containing your printable content
-
-  //   if (pdfElement) {
-  //     html2canvas(pdfElement).then((canvas) => {
-  //       const pdf = new jsPDF('p', 'mm', 'a4');
-  //       const imgData = canvas.toDataURL('image/png');
-  //       pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
-  //       pdf.save('downloaded-pdf.pdf');
-  //     });
-  //   }
-  // }
 }

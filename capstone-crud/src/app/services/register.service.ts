@@ -7,7 +7,7 @@ import { catchError, map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class RegisterService {
-  private apiUrl = 'http://localhost:8085'; // Replace with your actual backend API URL
+  private apiUrl = 'http://localhost:8085';
 
   constructor(private http: HttpClient) {}
 
@@ -28,11 +28,9 @@ export class RegisterService {
       StudentNum: StudentNum,
     };
 
-    // Make an HTTP post request to register the new user
     return this.http.post(`${this.apiUrl}/api/users/add`, newUser).pipe(
       catchError((error) => {
         console.error('Registration error:', error);
-        console.log('Server response:', error.error); // Log the actual response received from the server
         return throwError('Something went wrong. Please try again later.');
       })
     );
@@ -44,7 +42,7 @@ export class RegisterService {
         `${this.apiUrl}/api/users/check/${StudentNum}`
       )
       .pipe(
-        map((response) => response.isRegistered), // Extracting only the isRegistered property
+        map((response) => response.isRegistered),
         catchError((error) => {
           console.error('Error checking student number:', error);
           return throwError('Something went wrong. Please try again later.');

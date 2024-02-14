@@ -6,10 +6,8 @@ import { AppComponent } from '../app.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-// =============
-
 import { DataService } from '../data.service';
-// import { MatPaginatorModule} from '@angular/material/paginator';
+
 import { DatePipe } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 
@@ -29,4 +27,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
   templateUrl: './user-survey.component.html',
   styleUrl: './user-survey.component.css',
 })
-export class UserSurveyComponent {}
+export class UserSurveyComponent {
+  isResultLoaded = false;
+}

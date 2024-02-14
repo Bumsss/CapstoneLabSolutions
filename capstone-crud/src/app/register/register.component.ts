@@ -29,18 +29,36 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    const today = new Date();
+    const minDateString = today.toISOString().split('T')[0];
+
     this.registerForm = new FormGroup({
       FirstName: new FormControl('', Validators.required),
       LastName: new FormControl('', Validators.required),
-      Birthdate: new FormControl('', Validators.required),
+      Birthdate: new FormControl('', [
+        Validators.required,
+        this.validateBirthday(minDateString),
+      ] as any),
       StudentNum: new FormControl('', Validators.required),
-      // Add other form controls as needed...
     });
+  }
+
+  validateBirthday(minDate: string) {
+    return (control: FormControl) => {
+      const selectedDate = control.value;
+
+      if (selectedDate) {
+        if (selectedDate > minDate) {
+          return { invalidBirthday: true };
+        }
+      }
+
+      return null;
+    };
   }
 
   onSubmit() {
     if (this.registerForm.invalid) {
-      // If the form is invalid, prevent registration and show a message to the user
       this.snackBar.open('Please fill in all required fields.', 'Close', {
         duration: 5000,
         panelClass: 'error-snackbar',
@@ -56,7 +74,6 @@ export class RegisterComponent implements OnInit {
     const UserName = StudentNum;
     const Password = this.formatPassword(Birthdate);
 
-    // Check if the student number is already registered
     this.registerService.checkStudentNumber(StudentNum).subscribe(
       (isRegistered) => {
         if (isRegistered) {
@@ -65,8 +82,7 @@ export class RegisterComponent implements OnInit {
             panelClass: 'error-snackbar',
           });
         } else {
-          // If the student number is not registered, proceed with registration
-          this.isRegistering = true; // Set flag to indicate registration is in progress
+          this.isRegistering = true;
           this.registerService
             .register(
               UserName,
@@ -78,7 +94,6 @@ export class RegisterComponent implements OnInit {
             )
             .subscribe(
               (response) => {
-                console.log('Registration successful:', response);
                 this.snackBar.open('Registration successful!', 'Close', {
                   duration: 5000,
                   panelClass: 'success-snackbar',
@@ -90,7 +105,7 @@ export class RegisterComponent implements OnInit {
               }
             )
             .add(() => {
-              this.isRegistering = false; // Reset the flag when registration completes (whether success or failure)
+              this.isRegistering = false;
             });
         }
       },

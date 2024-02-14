@@ -6,7 +6,6 @@ import { AppComponent } from '../app.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { EquipmentCrudComponent } from '../equipment-crud/equipment-crud.component';
-// ===================
 import { CourseCrudComponent } from '../course-crud/course-crud.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DataService } from '../data.service';
@@ -75,7 +74,7 @@ export class ConsumableCrudComponent {
       .get('http://localhost:8085/api/consumables')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-        console.log(resultData.data);
+
         this.ConsumableArray = resultData.data;
       });
   }
@@ -94,20 +93,11 @@ export class ConsumableCrudComponent {
     this.http
       .post('http://localhost:8085/api/consumables/add', bodyData)
       .subscribe((resultData: any) => {
-        console.log(resultData);
         alert('Consumable Added Successfully!');
         this.getAllConsumables();
       });
   }
-  //-------------------------------------------------
-  // search(){
-  //   this.http.get("/api/equipments/:id"+ "/" + this.currentID)
-  //   .subscribe((resultData:any) => {
-  //     console.log(resultData);
-  //     this.getAllEquipments();
-  //   });
-  // }
-  //---------------------------------------------------
+
   setUpdate(data: any) {
     this.ConsumableName = data.ConsumableName;
     this.Quantity = data.Quantity;
@@ -133,7 +123,6 @@ export class ConsumableCrudComponent {
         bodyData
       )
       .subscribe((resultData: any) => {
-        console.log(resultData);
         alert('Consumable Updated Successfully!');
         this.getAllConsumables();
       });
@@ -161,7 +150,6 @@ export class ConsumableCrudComponent {
         )
         .subscribe(
           (resultData: any) => {
-            console.log(resultData);
             alert('Record Deleted');
             this.getAllConsumables();
           },
@@ -183,13 +171,12 @@ export class ConsumableCrudComponent {
       status = 'Available';
     }
 
-    // Check if email should be sent and if it hasn't been sent already
     if (
       (status === 'Low-on-Stock' || status === 'Not-Available') &&
       !this.emailSent
     ) {
-      this.sendEmailOnLowStockOrNotAvailable(); // Trigger email sending
-      this.emailSent = true; // Set emailSent flag to true
+      this.sendEmailOnLowStockOrNotAvailable();
+      this.emailSent = true;
     }
 
     return status;
@@ -213,12 +200,10 @@ export class ConsumableCrudComponent {
       (item) => item.Quantity <= 0
     );
 
-    // Check if there are any low stock items or items that are not available
     if (
       (lowStockItems.length > 0 || notAvailableItems.length > 0) &&
       !this.emailSent
     ) {
-      // Construct the email content
       let emailContent = `Consumables Status Alert:\n\n`;
 
       if (lowStockItems.length > 0) {
@@ -231,13 +216,11 @@ export class ConsumableCrudComponent {
         )}\n\n`;
       }
 
-      // Now, make an HTTP request to your server-side endpoint to send the email
       this.http
         .post('http://localhost:8085/send-email', { content: emailContent })
         .subscribe(
           (response) => {
-            console.log('Email sent successfully!', response);
-            this.emailSent = true; // Set the flag to true after the email is sent
+            this.emailSent = true;
           },
           (error) => {
             console.error('Error sending email:', error);
@@ -265,7 +248,7 @@ export class ConsumableCrudComponent {
 
   clearFilter(): void {
     this.SelectedCourseID = null;
-    // Manually trigger change detection to update the UI
+
     this.changeDetectorRef.detectChanges();
     this.filterConsumables();
   }
@@ -276,7 +259,6 @@ export class ConsumableCrudComponent {
         .getConsumablesByCourseId(this.SelectedCourseID)
         .subscribe(
           (response: any) => {
-            console.log(response);
             this.ConsumableArray = response.data;
           },
           (error) => {
@@ -284,10 +266,8 @@ export class ConsumableCrudComponent {
           }
         );
     } else {
-      // If SelectedCourseID is null, fetch all consumables
       this.http.get('http://localhost:8085/api/consumables').subscribe(
         (response: any) => {
-          console.log(response);
           this.ConsumableArray = response.data;
         },
         (error) => {
@@ -303,7 +283,6 @@ export class ConsumableCrudComponent {
         .getConsumablesByCourseId(this.SelectedCourseID)
         .subscribe(
           (response: any) => {
-            console.log(response);
             this.ConsumableArray = response.data;
           },
           (error) => {

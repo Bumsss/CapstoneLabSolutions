@@ -42,7 +42,7 @@ export class FacilityCrudComponent {
       .get('http://localhost:8085/api/room')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-        console.log(resultData);
+
         this.RoomsArray = resultData.data;
       });
   }
@@ -56,7 +56,6 @@ export class FacilityCrudComponent {
     this.http
       .post('http://localhost:8085/api/room/add', bodyData)
       .subscribe((resultData: any) => {
-        console.log(resultData);
         alert('Room Added Successfully!');
         this.getAllRooms();
       });
@@ -83,7 +82,6 @@ export class FacilityCrudComponent {
         bodyData
       )
       .subscribe((resultData: any) => {
-        console.log(resultData);
         alert('Room Updated Successfully!');
         this.getAllRooms();
       });
@@ -102,7 +100,6 @@ export class FacilityCrudComponent {
 
   save() {
     if (this.RoomID && this.RoomID !== '') {
-      // Construct an object with the necessary room data
       const roomData = {
         RoomName: this.RoomName,
         RoomDesc: this.RoomDesc,
@@ -125,7 +122,6 @@ export class FacilityCrudComponent {
         .delete('http://localhost:8085/api/room/delete/' + room.RoomID)
         .subscribe(
           (resultData: any) => {
-            console.log(resultData);
             alert('Record Deleted');
             this.getAllRooms();
           },

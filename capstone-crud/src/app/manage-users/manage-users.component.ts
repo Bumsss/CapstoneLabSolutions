@@ -35,6 +35,7 @@ export class ManageUsersComponent {
     StudentNum: '',
     AccessLevelID: '',
     isActive: false,
+    AccountID: '',
   };
 
   constructor(private http: HttpClient) {
@@ -47,7 +48,7 @@ export class ManageUsersComponent {
       .get('http://localhost:8085/api/users')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-        console.log(resultData.data);
+
         this.users = resultData.data;
       });
   }
@@ -56,27 +57,29 @@ export class ManageUsersComponent {
     this.http
       .post('http://localhost:8085/api/users/add', this.currentUser)
       .subscribe((resultData: any) => {
-        console.log(resultData);
         alert('User Added Successfully!');
         this.getAllUsers();
       });
   }
+
   setUpdate(user: any) {
-    // Set currentUser to the selected user for editing
-    this.currentUser = { ...user }; // Copy user object to prevent reference mutation
+    this.currentUser = { ...user };
+    this.currentUser.AccountID = user.AccountID;
     this.isUpdateFormActive = true;
   }
 
   toggleActive(currentUser: any) {
     if (currentUser && currentUser.isActive !== undefined) {
-      currentUser.isActive = currentUser.isActive === 1 ? 0 : 1; // Toggle isActive value
-      this.UpdateRecords(currentUser); // Update the record with the new isActive value
+      currentUser.isActive = currentUser.isActive === 1 ? 0 : 1;
+      currentUser.AccountID = currentUser.AccountID;
+      this.UpdateRecords(currentUser);
     } else {
       console.error(
         'currentUser is undefined or does not have an isActive property'
       );
     }
   }
+
   UpdateRecords(currentUser: any) {
     let bodyData = {
       UserName: currentUser.UserName,
@@ -91,31 +94,29 @@ export class ManageUsersComponent {
 
     this.http
       .put(
-        'http://localhost:8085/api/users/update' + '/' + currentUser.AccountID,
+        `http://localhost:8085/api/users/update/${currentUser.AccountID}`,
         bodyData
       )
       .subscribe((resultData: any) => {
-        console.log(resultData);
         alert('User Updated Successfully!');
         this.getAllUsers();
       });
   }
 
-  save() {
-    if (this.currentUser.AccountID == '') {
+  save(user: any) {
+    if (!user.AccountID) {
       this.addUser();
     } else {
-      this.UpdateRecords(this.currentUser);
+      this.UpdateRecords(user);
     }
   }
 
   deleteUser(user: any) {
     this.http
-      .delete('http://localhost:8085/api/users/delete/' + user.AccountID)
+      .delete(`http://localhost:8085/api/users/delete/${user.AccountID}`)
       .subscribe(
         () => {
-          console.log('User Deleted Successfully!');
-          this.getAllUsers(); // Update the user list after deletion
+          this.getAllUsers();
         },
         (error) => {
           console.error('Error deleting user:', error);
@@ -125,7 +126,8 @@ export class ManageUsersComponent {
   }
 
   setCurrentUser(user: any) {
-    this.currentUser = { ...user }; // copy user object to prevent reference mutation
+    this.currentUser = { ...user };
+    this.currentUser.AccountID = user.AccountID;
     this.isUpdateFormActive = true;
   }
 
@@ -138,19 +140,22 @@ export class ManageUsersComponent {
       Birthdate: '',
       StudentNum: '',
       isActive: false,
+      AccountID: '',
     };
     this.isUpdateFormActive = false;
   }
+
   loadAccessLevels() {
     this.http
       .get('http://localhost:8085/api/access')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-        console.log(resultData.data);
+
         this.AccessLevels = resultData.data;
       });
   }
+
   updateAccessLevel(currentUser: any) {
-    this.UpdateRecords(currentUser); // Call your existing method to update the user's record
+    this.UpdateRecords(currentUser);
   }
 }

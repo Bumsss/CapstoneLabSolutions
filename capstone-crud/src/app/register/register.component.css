@@ -140,3 +140,7 @@
   width: 10%;
   height: 100%;
 }
+
+.birthday-error {
+  color: red;
+}

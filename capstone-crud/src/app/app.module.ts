@@ -22,9 +22,11 @@ import { UserCourseComponentModule } from './user-course/user-course.module';
 import { UserEquipmentComponentModule } from './user-equipment/user-equipment.module';
 import { UserConsumableComponent } from './user-consumable/user-consumable.component';
 import { UserMenuComponentModule } from './user-menu/user-menu.module';
-import { UserSurveyComponent } from './user-survey/user-survey.component';
+import { UserSurveyComponentModule } from './user-survey/user-survey.module';
+import { UserFacilityComponentModule } from './user-facility/user-facility.module';
+import { UserProfileComponentModule } from './user-profile/user-profile.module';
 // Material Imports
-//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { MatTableModule } from '@angular/material/table';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -53,7 +55,9 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
     ConsumableReportsComponentModule,
     ManageUsersComponentModule,
     FacilityCrudComponentModule,
-    UserSurveyComponent,
+    UserSurveyComponentModule,
+    UserFacilityComponentModule,
+    UserProfileComponentModule,
   ],
   imports: [
     BrowserModule,

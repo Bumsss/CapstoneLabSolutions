@@ -8,8 +8,15 @@
             >Users
           </p>
         </div>
+        <!-- Loader -->
         <div class="loader-container" *ngIf="!isResultLoaded">
-          <div class="loader"></div>
+          <div class="loader">
+            <label
+              >Sorry, we're having trouble loading the database. Try reloading
+              the page.</label
+            >
+            <div class="loading"></div>
+          </div>
         </div>
       </form>
     </div>
@@ -40,12 +47,24 @@
                     }
             "
           >
-            <td>{{ user.LastName }}</td>
-            <td>{{ user.FirstName }}</td>
-            <td>{{ user.StudentNum }}</td>
-            <td>{{ user.UserName }}</td>
-            <td>{{ user.Password }}</td>
+            <td>
+              <input type="text" [(ngModel)]="user.LastName" />
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="user.FirstName" />
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="user.StudentNum" />
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="user.UserName" />
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="user.Password" />
+            </td>
+
             <td>{{ getAccessLevelName(user.AccessLevelID) }}</td>
+
             <td>
               <button
                 type="button"
@@ -56,9 +75,10 @@
                 {{ user.isActive ? "Active" : "Inactive" }}
               </button>
             </td>
+
             <td class="table-button">
-              <button type="button" (click)="setUpdate(user)">
-                <mat-icon fontIcon="edit" aria-hidden="false"></mat-icon>Edit
+              <button type="button" (click)="save(user)">
+                <mat-icon fontIcon="save" aria-hidden="false"></mat-icon>Save
               </button>
               <button type="button" (click)="deleteUser(user)">
                 <mat-icon fontIcon="delete" aria-hidden="false"></mat-icon

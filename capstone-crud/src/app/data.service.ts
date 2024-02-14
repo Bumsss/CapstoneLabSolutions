@@ -1,5 +1,3 @@
-// equipment.service.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, of, throwError } from 'rxjs';
@@ -27,7 +25,7 @@ export class DataService {
     const url = `${this.Url}/${AccountID}`;
     return this.http.get(url);
   }
-  // to get courses
+
   getCourses(): Observable<any> {
     const url = 'http://localhost:8085/api/courses';
     return this.http.get(url);
@@ -40,13 +38,10 @@ export class DataService {
     return this.http.get<any>(this.Url).pipe(
       map((response) => {
         if (Array.isArray(response)) {
-          // If the response is already an array, return it
           return response;
         } else if (typeof response === 'object') {
-          // If the response is an object, convert it to an array
           return Object.keys(response).map((key) => response[key]);
         } else {
-          // If the response is neither an array nor an object, return an empty array
           return [];
         }
       }),

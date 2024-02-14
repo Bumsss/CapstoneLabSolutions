@@ -387,6 +387,8 @@ server.put("/api/users/update/:id", (req, res) => {
     req.body.isActive +
     "', StudentNum='" +
     req.body.StudentNum +
+    "', UserName='" +
+    req.body.UserName +
     "', Password='" +
     req.body.Password +
     "', AccessLevelID='" +

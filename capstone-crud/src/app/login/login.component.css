@@ -76,43 +76,43 @@ input[type="password"]:focus {
 }
 
 .login-form button {
-  width: 100%; /* Make the button 50% of the container width */
-  margin-top: 10px; /* Add margin to the top */
+  width: 100%;
+  margin-top: 10px;
   padding: 13px;
-  background-color: #993399; /* Green color, adjust as needed */
+  background-color: #993399;
   color: white;
   border: none;
-  border-radius: 5px; /* Make the border radius 50% for a pill shape */
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  display: flex; /* Make the button a block-level element */
+  display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: auto; /* Center the button horizontally */
-  margin-right: auto; /* Center the button horizontally */
+  margin-left: auto;
+  margin-right: auto;
   font-size: 15px;
 }
 
 .login-form button[type="button"] {
-  width: 100%; /* Make the button 50% of the container width */
-  margin-top: 10px; /* Add margin to the top */
+  width: 100%;
+  margin-top: 10px;
   padding: 13px;
-  background-color: #993399; /* Green color, adjust as needed */
+  background-color: #993399;
   color: white;
   border: none;
-  border-radius: 5px; /* Make the border radius 50% for a pill shape */
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  display: flex; /* Make the button a block-level element */
+  display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: auto; /* Center the button horizontally */
-  margin-right: auto; /* Center the button horizontally */
+  margin-left: auto;
+  margin-right: auto;
   font-size: 15px;
 }
 
 .login-form button:hover {
-  background-color: #660066; /* Darker green color on hover, adjust as needed */
+  background-color: #660066;
 }
 
 .cancel-button-div {
@@ -125,7 +125,7 @@ input[type="password"]:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Adjust the transparency as needed */
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 
@@ -133,27 +133,26 @@ input[type="password"]:focus {
   text-decoration: none;
 }
 
-/* Modified styles for the image container and image */
 .image-container {
   display: flex;
   align-items: center;
-  flex-direction: column; /* Stack items vertically */
-  margin-right: 20px; /* Adjust the margin as needed */
+  flex-direction: column;
+  margin-right: 20px;
 }
 
 .image-container img {
   max-width: 260px;
   height: auto;
-  border-radius: 8px; /* Optional: Add border-radius for rounded corners */
+  border-radius: 8px;
 }
 
 .text-container {
-  margin-top: 0px; /* Adjust the margin as needed */
-  text-align: center; /* Center the text */
+  margin-top: 0px;
+  text-align: center;
 }
 
 .text-container h2 {
-  margin-top: 10px; /* Adjust the margin as needed */
+  margin-top: 10px;
   margin-bottom: 0px;
   font-family: "Inter", sans-serif;
   font-size: 50px;
@@ -162,21 +161,21 @@ input[type="password"]:focus {
 }
 
 .text-container h3 {
-  margin-top: 0px; /* Adjust the margin as needed */
+  margin-top: 0px;
   font-family: "Inter", sans-serif;
   font-size: 20px;
   font-weight: 700;
   color: white;
 }
 .text-container p {
-  margin-top: -10px; /* Adjust the margin as needed */
+  margin-top: -10px;
   font-family: "Inter", sans-serif;
   font-size: 12px;
   color: white;
 }
 .form-check {
   display: grid;
-  grid-template-rows: auto auto; /* Two rows, auto-sized */
+  grid-template-rows: auto auto;
   align-items: center;
 }
 .form-check a {
@@ -186,24 +185,37 @@ input[type="password"]:focus {
 
 .form-check a:hover {
   color: var(--darkest-color);
-  transform: scale(1.1);
 }
 
 .form-check input[type="checkbox"] {
-  grid-row: 1; /* Place the checkbox in the first grid row */
+  grid-row: 1;
   grid-column: 2;
   margin-top: 15px;
   padding: 0px;
-  margin-left: -7px;
+  margin-left: 3;
+  cursor: pointer;
 }
 
-.form-check label {
-  grid-row: 1; /* Place the label in the second grid row */
+.form-check .label-holder {
+  grid-row: 1;
   grid-column: 1;
-  text-align: left;
+  text-align: center;
   margin: 0px;
   padding: 0px;
   font-weight: 500;
+}
+
+.form-check label {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  font-size: 15px;
+}
+
+.form-check a {
+  display: flex;
+  flex-direction: row;
+  padding: 0px 2px;
 }
 
 .outer-container .container .login-form .content mat-icon {

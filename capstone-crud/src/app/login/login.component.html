@@ -33,10 +33,14 @@
             required
             [(ngModel)]="termsAgreed"
           />
-          <label for="termsCheckbox"
-            >I agree to the
-            <a routerLink="/terms">Terms and Conditions</a></label
-          >
+          <div class="label-holder">
+            <label for="termsCheckbox"
+              >I agree to the
+              <a routerLink="/terms">
+                Terms and Conditions <mat-icon>launch</mat-icon></a
+              ></label
+            >
+          </div>
         </div>
 
         <div class="login-button">
@@ -45,7 +49,6 @@
           </button>
         </div>
         <div class="register-button">
-          <!-- <a routerLink="/register">Register</a> -->
           <a [routerLink]="['/register']"
             ><button type="button">
               Register<mat-icon>person_add_alt_1</mat-icon>

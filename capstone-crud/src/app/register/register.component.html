@@ -33,7 +33,14 @@
             formControlName="Birthdate"
             required
           />
+          <div
+            class="birthday-error"
+            *ngIf="registerForm.get('Birthdate')?.hasError('invalidBirthday')"
+          >
+            Birthday cannot be set to today or after today.
+          </div>
         </div>
+
         <div>
           <label for="StudentNum">Student Number</label>
           <input

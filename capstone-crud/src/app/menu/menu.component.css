@@ -17,14 +17,14 @@
 .mat-toolbar img {
   height: 80px;
   width: 80px;
-  object-fit: contain; /* Ensure the image fits within the container */
+  object-fit: contain;
 }
 
 .title-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center; /* Center text horizontally */
+  text-align: center;
 }
 
 .custom-toolbar {

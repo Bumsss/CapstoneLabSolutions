@@ -18,6 +18,9 @@ import { FacilityCrudComponent } from './facility-crud/facility-crud.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { AdminManageUsersComponent } from './admin-manage-users/admin-manage-users.component';
+import { UserFacilityComponent } from './user-facility/user-facility.component';
+import { UserSurveyComponent } from './user-survey/user-survey.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 export const routes: Routes = [
   {
@@ -90,6 +93,21 @@ export const routes: Routes = [
         component: UserConsumableComponent,
         title: 'Consumables',
       },
+      {
+        path: 'user-facilities',
+        component: UserFacilityComponent,
+        title: 'Facilities',
+      },
+      {
+        path: 'user-survey',
+        component: UserSurveyComponent,
+        title: 'Survey',
+      },
+      {
+        path: 'user-profile',
+        component: UserProfileComponent,
+        title: 'User Profile',
+      },
     ],
   },
 
@@ -148,7 +166,7 @@ export const routes: Routes = [
     component: LoginComponent,
     title: 'Login',
   },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login if no route matches
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   {
     path: 'register',

@@ -123,11 +123,6 @@ button {
   border: none;
   color: white;
   border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: var(--darkest2-color);
 }
 
 button mat-icon {
@@ -186,11 +181,6 @@ button:nth-child(2) {
   box-shadow: 2px 2px 10px -5px lightgrey;
   margin-top: -180px;
   margin-left: -90px;
-  label {
-    color: #002;
-    font-size: 15px;
-    animation: bit 0.6s alternate infinite;
-  }
 }
 .loading {
   width: 100%;
@@ -211,6 +201,12 @@ button:nth-child(2) {
   z-index: 1;
   animation: loading 0.6s alternate infinite;
 }
+label {
+  color: #002;
+  font-size: 15px;
+  animation: bit 0.6s alternate infinite;
+}
+
 @keyframes bit {
   from {
     opacity: 0.3;

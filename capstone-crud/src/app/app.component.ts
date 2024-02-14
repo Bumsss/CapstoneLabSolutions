@@ -18,6 +18,8 @@ import { ConsumableReportsComponent } from './consumable-reports/consumable-repo
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { FacilityCrudComponent } from './facility-crud/facility-crud.component';
 import { UserSurveyComponent } from './user-survey/user-survey.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserFacilityComponent } from './user-facility/user-facility.component';
 
 @Component({
   selector: 'app-root',
@@ -41,6 +43,8 @@ import { UserSurveyComponent } from './user-survey/user-survey.component';
     ManageUsersComponent,
     FacilityCrudComponent,
     UserSurveyComponent,
+    UserFacilityComponent,
+    UserProfileComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

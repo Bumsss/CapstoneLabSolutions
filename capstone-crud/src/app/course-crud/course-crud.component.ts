@@ -7,11 +7,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { EquipmentCrudComponent } from '../equipment-crud/equipment-crud.component';
 import { ConsumableCrudComponent } from '../consumable-crud/consumable-crud.component';
-import { error } from 'console';
+
 import { MatIconModule } from '@angular/material/icon';
 import { NgxPaginationModule } from 'ngx-pagination';
-
-// --------------------------------
 
 @Component({
   selector: 'app-course-crud',
@@ -44,7 +42,7 @@ export class CourseCrudComponent {
 
   p: number = 1;
   itemsPerPage: number = 7;
-  // added course service, remove if not working
+
   constructor(private http: HttpClient) {
     this.getAllCourses();
   }
@@ -56,7 +54,7 @@ export class CourseCrudComponent {
       .get('http://localhost:8085/api/courses')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-        console.log(resultData.data);
+
         this.CourseArray = resultData.data;
       });
   }
@@ -70,7 +68,6 @@ export class CourseCrudComponent {
     this.http
       .post('http://localhost:8085/api/courses/add', bodyData)
       .subscribe((resultData: any) => {
-        console.log(resultData);
         alert('Course Added Successfully!');
         this.getAllCourses();
       });
@@ -95,7 +92,6 @@ export class CourseCrudComponent {
         bodyData
       )
       .subscribe((resultData: any) => {
-        console.log(resultData);
         alert('Course Updated Successfully!');
         this.getAllCourses();
       });
@@ -121,7 +117,6 @@ export class CourseCrudComponent {
         )
         .subscribe(
           (resultData: any) => {
-            console.log(resultData);
             alert('Record Deleted');
             this.getAllCourses();
           },
@@ -136,7 +131,6 @@ export class CourseCrudComponent {
 
     this.http.get(apiUrl).subscribe(
       (resultData: any) => {
-        console.log(resultData);
         this.EquipmentArray = resultData.data;
       },
       (error) => {
@@ -145,7 +139,6 @@ export class CourseCrudComponent {
     );
   }
   filterEquipment(): void {
-    // this.CourseID++;
     this.filterEquipments();
   }
 }

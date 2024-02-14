@@ -8,9 +8,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css'],
+  selector: 'app-user-profile',
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -18,10 +17,11 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
     NgxPaginationModule,
   ],
-  standalone: true,
   providers: [DatePipe],
+  templateUrl: './user-profile.component.html',
+  styleUrl: './user-profile.component.css',
 })
-export class ProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit {
   currentUser: any;
 
   constructor(
@@ -63,7 +63,6 @@ export class ProfileComponent implements OnInit {
       .get('http://localhost:8085/api/users')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-
         this.userArray = resultData.data;
 
         const currentUserData = this.userArray.find(
@@ -71,7 +70,6 @@ export class ProfileComponent implements OnInit {
         );
         if (currentUserData) {
           this.currentUser = currentUserData;
-
           this.LastName = currentUserData.LastName;
           this.FirstName = currentUserData.FirstName;
           this.Birthdate = currentUserData.Birthdate;
