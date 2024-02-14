@@ -1,13 +1,12 @@
 {
-  "name": "test",
+  "name": "capstone-crud",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:test": "node dist/capstone-crud/server/server.mjs"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {

@@ -119,19 +119,24 @@ export class AdminManageUsersComponent {
   }
 
   deleteUser(user: any) {
-    this.http
-      .delete(`http://localhost:8085/api/users/delete/${user.AccountID}`)
-      .subscribe(
-        () => {
-          this.getAllUsers();
-        },
-        (error) => {
-          console.error('Error deleting user:', error);
-          alert('Failed to delete user. Please try again later.');
-        }
-      );
+    const confirmation = window.confirm(
+      'Are you sure you want to delete this record?'
+    );
+    if (confirmation) {
+      this.http
+        .delete(`http://localhost:8085/api/users/delete/${user.AccountID}`)
+        .subscribe(
+          (resultData: any) => {
+            alert('Record Deleted');
+            this.getAllUsers();
+          },
+          (error) => {
+            console.error('Error deleting user:', error);
+            alert('Failed to delete user. Please try again later.');
+          }
+        );
+    }
   }
-
   setCurrentUser(user: any) {
     this.currentUser = { ...user };
     this.currentUser.AccountID = user.AccountID;

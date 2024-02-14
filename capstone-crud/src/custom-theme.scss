@@ -11,20 +11,20 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$capstone-crud-primary: mat.define-palette(mat.$indigo-palette);
-$capstone-crud-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$test-primary: mat.define-palette(mat.$indigo-palette);
+$test-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$capstone-crud-warn: mat.define-palette(mat.$red-palette);
+$test-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$capstone-crud-theme: mat.define-light-theme(
+$test-theme: mat.define-light-theme(
   (
     color: (
-      primary: $capstone-crud-primary,
-      accent: $capstone-crud-accent,
-      warn: $capstone-crud-warn,
+      primary: $test-primary,
+      accent: $test-accent,
+      warn: $test-warn,
     ),
   )
 );
@@ -32,4 +32,4 @@ $capstone-crud-theme: mat.define-light-theme(
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($capstone-crud-theme);
+@include mat.all-component-themes($test-theme);
