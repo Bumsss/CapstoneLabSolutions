@@ -176,3 +176,13 @@ h4 {
   margin: 8px 0;
   font-family: "Oswald", sans-serif;
 }
+
+.mdc-list-item {
+  display: flex;
+
+  align-items: center;
+
+  padding: 40px 8px;
+
+  cursor: pointer;
+}

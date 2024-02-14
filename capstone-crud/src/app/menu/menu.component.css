@@ -136,10 +136,6 @@ mat-icon {
 
 .sidenav-container .itemlink:hover {
   background-color: #e2bce2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .sidenav-container .list-last-main {
@@ -178,7 +174,7 @@ mat-icon {
 .mdc-list-item {
   display: flex;
   align-items: center;
-  padding: 15px 8px;
+  padding: 40px 8px;
   cursor: pointer;
 }
 
@@ -187,4 +183,5 @@ mat-icon {
   justify-content: center;
   align-items: center;
 }
+
 /* ------------- */
