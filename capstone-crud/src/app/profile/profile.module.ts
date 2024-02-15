@@ -7,4 +7,4 @@ import { ProfileComponent } from './profile.component';
   exports: [ProfileComponent],
   providers: [],
 })
-export class ProfileComponentModule {}
+export class UserProfileComponentModule {}

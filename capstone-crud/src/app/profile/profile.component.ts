@@ -9,8 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css'],
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -18,12 +17,13 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
     NgxPaginationModule,
   ],
-  standalone: true,
+  templateUrl: './profile.component.html',
+  styleUrl: './profile.component.css',
   providers: [DatePipe],
 })
 export class ProfileComponent implements OnInit {
   currentUser: any;
-
+  birthdateError: string = '';
   constructor(
     private authService: AuthService,
     private http: HttpClient,
@@ -58,12 +58,23 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  validateBirthdate() {
+    const selectedDate = new Date(this.Birthdate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate >= today) {
+      this.birthdateError = 'Birthdate cannot be set to today or the future.';
+    } else {
+      this.birthdateError = '';
+    }
+  }
+
   getAllUsers(): void {
     this.http
       .get('http://localhost:8085/api/users')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-
         this.userArray = resultData.data;
 
         const currentUserData = this.userArray.find(
@@ -71,7 +82,6 @@ export class ProfileComponent implements OnInit {
         );
         if (currentUserData) {
           this.currentUser = currentUserData;
-
           this.LastName = currentUserData.LastName;
           this.FirstName = currentUserData.FirstName;
           this.Birthdate = currentUserData.Birthdate;
@@ -109,6 +119,15 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
+    if (this.birthdateError !== '') {
+      console.error(
+        'Validation error: Birthdate cannot be set to today or the future.'
+      );
+      alert(
+        'Validation error: Birthdate cannot be set to today or the future.'
+      );
+    }
+
     let bodyData = {
       LastName: this.LastName,
       FirstName: this.FirstName,
@@ -120,20 +139,30 @@ export class ProfileComponent implements OnInit {
       AccessLevelID: this.currentUser.AccessLevelID,
     };
 
-    this.http
-      .put(
-        'http://localhost:8085/api/users/update/' + this.currentUser.AccountID,
-        bodyData
-      )
-      .subscribe((resultData: any) => {
-        alert('Profile Updated Successfully!');
+    // Only proceed with the HTTP request if there are no validation errors
+    if (!this.birthdateError) {
+      console.log('Sending HTTP request to update profile:', bodyData);
 
-        this.authService.updateCurrentUser(bodyData);
-
-        this.refreshUserData();
-
-        this.toggleEditMode();
-      });
+      this.http
+        .put(
+          'http://localhost:8085/api/users/update/' +
+            this.currentUser.AccountID,
+          bodyData
+        )
+        .subscribe({
+          next: (resultData: any) => {
+            console.log('Profile Updated Successfully!');
+            alert('Profile Updated Successfully!');
+            this.authService.updateCurrentUser(bodyData);
+            this.refreshUserData();
+            this.toggleEditMode();
+          },
+          error: (error) => {
+            console.error('Error updating profile:', error);
+            // Log additional details about the error, or handle it as needed
+          },
+        });
+    }
   }
 
   refreshUserData(): void {

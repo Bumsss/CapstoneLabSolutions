@@ -104,6 +104,17 @@ p.current-name {
   border: 1px solid #ccc;
 }
 
+p.current-name-notallowed {
+  background-color: white;
+  padding: 5px;
+  border: 1px solid #ccc;
+  color: var(--not-allowed);
+}
+
+p.current-name-notallowed:hover {
+  cursor: not-allowed;
+}
+
 .button {
   all: none;
   margin: auto;
@@ -150,6 +161,17 @@ input {
 button:nth-child(2) {
   margin-left: 5px;
 }
+
+.error-text {
+  color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px; /* Adjust font size as needed */
+}
+
+/* ... other styles ... */
 
 .loader-container {
   display: flex;

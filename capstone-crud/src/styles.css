@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap");
-@include mat.all-component-themes($test-theme);
+
 body {
   height: 100vh;
 }
@@ -25,6 +25,7 @@ body {
   --editbuttonh-color: rgb(0, 98, 235);
   --deletebutton-color: #e33437;
   --green-color: #509156;
+  --not-allowed: rgb(202, 202, 202);
 }
 
 @keyframes slideanimation2 {
