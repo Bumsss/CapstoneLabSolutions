@@ -133,6 +133,7 @@ export class ConsumableReportsComponent {
         this.fetchTransactions();
         this.clearDropdownSelections();
       });
+    this.clearInputs();
   }
   clearDropdownSelections() {
     this.CourseID = null;
@@ -149,6 +150,11 @@ export class ConsumableReportsComponent {
     this.Quantity = data.Quantity;
     this.DateCreated = data.DateCreated;
     this.currentID = data.TransactionConsumeID;
+
+    if (this.ConsumableArray.length === 0) {
+      // If not loaded, fetch the consumables
+      this.loadConsumables();
+    }
   }
 
   UpdateRecords() {
@@ -171,6 +177,7 @@ export class ConsumableReportsComponent {
         alert('Transaction Updated Successfully!');
         this.fetchTransactions();
       });
+    this.clearInputs;
   }
   save() {
     if (this.currentID == '') {
@@ -178,6 +185,14 @@ export class ConsumableReportsComponent {
     } else {
       this.UpdateRecords();
     }
+    this.clearInputs();
+  }
+
+  clearInputs() {
+    this.CourseID = 0;
+    this.ConsumableID = 0;
+    this.AccountID = 0;
+    this.Quantity = 0;
   }
 
   setDelete(data: any) {

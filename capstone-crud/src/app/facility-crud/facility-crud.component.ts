@@ -59,6 +59,7 @@ export class FacilityCrudComponent {
         alert('Room Added Successfully!');
         this.getAllRooms();
       });
+    this.clearInputs();
   }
 
   setUpdate(data: any) {
@@ -85,6 +86,7 @@ export class FacilityCrudComponent {
         alert('Room Updated Successfully!');
         this.getAllRooms();
       });
+    this.clearInputs();
   }
 
   toggleActive(data: any) {
@@ -110,6 +112,12 @@ export class FacilityCrudComponent {
     } else {
       this.addRooms();
     }
+    this.clearInputs();
+  }
+
+  clearInputs() {
+    this.RoomName = '';
+    this.RoomDesc = '';
   }
 
   deleteRoom(room: any) {

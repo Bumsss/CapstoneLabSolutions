@@ -98,6 +98,7 @@ export class EquipmentCrudComponent {
         alert('Equipment Added Successfully!');
         this.getAllEquipments();
       });
+    this.clearInputs();
   }
 
   setUpdate(data: any) {
@@ -136,6 +137,14 @@ export class EquipmentCrudComponent {
     } else {
       this.UpdateRecords();
     }
+    this.clearInputs();
+  }
+
+  clearInputs() {
+    this.EquipmentName = '';
+    this.Quantity = '';
+    this.CourseID = 0;
+    this.CalibrationSchedule = new Date();
   }
 
   setDelete(data: any) {

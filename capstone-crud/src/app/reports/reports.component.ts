@@ -133,6 +133,7 @@ export class ReportsComponent {
         this.fetchTransactions();
         this.clearDropdownSelections();
       });
+    this.clearInputs();
   }
   clearDropdownSelections() {
     this.CourseID = null;
@@ -173,6 +174,7 @@ export class ReportsComponent {
         alert('Transaction Updated Successfully!');
         this.fetchTransactions();
       });
+    this.clearInputs();
   }
   save() {
     if (this.currentID == '') {
@@ -180,6 +182,15 @@ export class ReportsComponent {
     } else {
       this.UpdateRecords();
     }
+    this.clearInputs();
+  }
+
+  clearInputs() {
+    this.CourseID = 0;
+    this.EquipmentID = 0;
+    this.AccountID = 0;
+    this.Quantity = 0;
+    this.DateReturned = new Date();
   }
 
   setDelete(data: any) {
@@ -219,10 +230,10 @@ export class ReportsComponent {
 
   onCourseChange(): void {
     if (this.CourseID) {
+      this.cdr.detectChanges();
       this.reportService.getEquipmentsByCourseId(this.CourseID).subscribe(
         (response: any) => {
           this.EquipmentArrayForSelectedCourse = response.data;
-          this.cdr.detectChanges();
         },
         (error) => {
           console.error('Error fetching equipments by course:', error);

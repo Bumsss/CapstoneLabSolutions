@@ -40,9 +40,9 @@ export class ConsumableCrudComponent {
   currentID = '';
   CourseID!: number;
   ConsumableName: string = '';
-  Quantity?: number;
+  Quantity: string = '';
   ConsumableStat: string = '';
-  ExpirationDate: Date = new Date();
+  ExpirationDate: Date | null = null;
 
   SelectedCourseID: number | null = null;
 
@@ -74,7 +74,6 @@ export class ConsumableCrudComponent {
       .get('http://localhost:8085/api/consumables')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-
         this.ConsumableArray = resultData.data;
       });
   }
@@ -83,19 +82,18 @@ export class ConsumableCrudComponent {
     let bodyData = {
       ConsumableName: this.ConsumableName,
       Quantity: this.Quantity,
-      ExpirationDate: this.datePipe.transform(
-        this.ExpirationDate,
-        'yyyy-MM-dd'
-      ),
+      ExpirationDate: this.ExpirationDate || null,
       CourseID: this.CourseID,
     };
 
     this.http
       .post('http://localhost:8085/api/consumables/add', bodyData)
       .subscribe((resultData: any) => {
+        console.log(resultData);
         alert('Consumable Added Successfully!');
         this.getAllConsumables();
       });
+    this.clearInputs();
   }
 
   setUpdate(data: any) {
@@ -126,6 +124,7 @@ export class ConsumableCrudComponent {
         alert('Consumable Updated Successfully!');
         this.getAllConsumables();
       });
+    this.clearInputs();
   }
 
   save() {
@@ -134,6 +133,14 @@ export class ConsumableCrudComponent {
     } else {
       this.UpdateRecords();
     }
+    this.clearInputs();
+  }
+
+  clearInputs() {
+    this.CourseID = 0;
+    this.ConsumableName = '';
+    this.Quantity = '';
+    this.ExpirationDate = null;
   }
 
   setDelete(data: any) {

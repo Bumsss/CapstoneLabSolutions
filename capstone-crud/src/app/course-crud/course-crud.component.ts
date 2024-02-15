@@ -71,6 +71,7 @@ export class CourseCrudComponent {
         alert('Course Added Successfully!');
         this.getAllCourses();
       });
+    this.clearInputs();
   }
 
   setUpdate(data: any) {
@@ -103,8 +104,12 @@ export class CourseCrudComponent {
     } else {
       this.UpdateRecords();
     }
+    this.clearInputs();
   }
-
+  clearInputs() {
+    this.CourseCode = '';
+    this.CourseName = '';
+  }
   setDelete(data: any) {
     const confirmation = window.confirm(
       'Are you sure you want to delete this record?'
