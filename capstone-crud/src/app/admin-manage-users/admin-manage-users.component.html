@@ -21,6 +21,16 @@
       </form>
     </div>
 
+    <div class="searchByStudNum">
+      <input
+        type="text"
+        [(ngModel)]="searchStudentNum"
+        placeholder="Search by Student Number"
+      />
+      <button type="button" (click)="searchUserByStudentNum()">Search</button>
+      <button type="button" (click)="clearSearch()">Clear</button>
+    </div>
+
     <div class="container-table">
       <table cellspacing="0">
         <thead>
@@ -38,12 +48,15 @@
         <tbody>
           <tr
             *ngFor="
-              let user of users
+              let user of (filteredUsers.length > 0 ? filteredUsers : users)
                 | paginate
                   : {
                       itemsPerPage: itemsPerPage,
                       currentPage: p,
-                      totalItems: users.length
+                      totalItems:
+                        filteredUsers.length > 0
+                          ? filteredUsers.length
+                          : users.length
                     }
             "
           >

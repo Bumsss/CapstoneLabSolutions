@@ -26,6 +26,9 @@ export class ManageUsersComponent {
   p: number = 1;
   itemsPerPage: number = 7;
 
+  searchStudentNum: string = '';
+  filteredUsers: any[] = [];
+
   currentUser: any = {
     UserName: '',
     Password: '',
@@ -157,5 +160,40 @@ export class ManageUsersComponent {
 
   updateAccessLevel(currentUser: any) {
     this.UpdateRecords(currentUser);
+  }
+
+  searchUserByStudentNum() {
+    if (this.searchStudentNum.trim() !== '') {
+      const searchTerm = this.searchStudentNum.trim();
+      this.http
+        .get(`http://localhost:8085/api/users/search/${searchTerm}`)
+        .subscribe(
+          (resultData: any) => {
+            if (resultData.status && resultData.user) {
+              // Update the filteredUsers array with the search result
+              this.filteredUsers = [resultData.user];
+            } else {
+              alert(resultData.message);
+              this.filteredUsers = []; // Clear the filtered users array if no user found
+            }
+            // Reset pagination to display the searched user if found
+            this.p = 1;
+          },
+          (error) => {
+            console.error('Error searching user by StudentNum:', error);
+            alert(
+              'Error searching user by StudentNum. Please try again later.'
+            );
+          }
+        );
+    } else {
+      alert('Please enter a Student Number to search.');
+    }
+  }
+
+  clearSearch() {
+    this.searchStudentNum = ''; // Clear the search input
+    this.filteredUsers = []; // Clear the filtered users array
+    this.p = 1; // Reset pagination to the first page
   }
 }
