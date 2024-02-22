@@ -106,7 +106,6 @@ export class ProfileComponent implements OnInit {
     this.FirstName = currentUser.FirstName;
     const birthdateDate = new Date(currentUser.Birthdate);
     this.Birthdate = this.datePipe.transform(birthdateDate, 'yyyy-MM-dd') || '';
-
     this.StudentNum = currentUser.StudentNum;
     this.UserName = currentUser.UserName;
     this.Password = currentUser.Password;

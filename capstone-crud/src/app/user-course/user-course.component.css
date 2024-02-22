@@ -199,3 +199,27 @@ p mat-icon {
     left: 0%;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .container-course {
+    max-width: 40%;
+    margin: auto;
+  }
+
+  .container-course .container-inside .container-table table td {
+    font-size: 13px;
+  }
+
+  .table-pagination-outer {
+    display: flex;
+  }
+
+  .table-pagination-inner {
+    font-size: 12px;
+    margin-top: -7px;
+  }
+
+  .table-pagination-outer {
+    display: flex;
+  }
+}

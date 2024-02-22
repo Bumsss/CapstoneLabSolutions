@@ -262,3 +262,28 @@ p mat-icon {
     left: 0%;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .container-consumable {
+    max-width: 50%;
+    margin: auto;
+    padding-bottom: 20px;
+  }
+
+  .container-consumable .container-inside .container-table table td {
+    font-size: 13px;
+  }
+
+  .table-pagination-inner {
+    font-size: 12px;
+    margin-top: -7px;
+  }
+
+  .table-pagination-outer {
+    display: flex;
+  }
+
+  .loader-container {
+    margin: auto;
+  }
+}
