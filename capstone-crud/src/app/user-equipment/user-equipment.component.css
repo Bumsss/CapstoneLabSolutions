@@ -1,6 +1,6 @@
 /* Start of Main Table format */
 .container-equipment {
-  width: 100%;
+  max-width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -223,25 +223,59 @@ p mat-icon {
 
 @media screen and (max-width: 480px) {
   .container-equipment {
-    max-width: 50%;
+    max-width: 36%;
     margin: auto;
     margin-bottom: 20px;
   }
 
   .container-equipment .container-inside .container-table table td {
-    font-size: 13px;
+    font-size: 0.8em;
+  }
+
+  .container-equipment .container-inside .container-filter {
+    display: block;
+  }
+
+  .container-equipment .container-inside .container-filter select {
+    width: 120px;
+  }
+
+  .container-equipment .container-inside .card p {
+    font-size: 0.8em;
   }
 
   .table-pagination-inner {
     font-size: 12px;
     margin-top: -7px;
+    margin-left: -20px;
   }
 
   .table-pagination-outer {
     display: flex;
   }
 
+  .table-pagination-outer {
+    margin: 0px 20px 20px 20px;
+
+    height: 50px;
+  }
+
+  ngx-pagination {
+    margin: auto;
+  }
+
   .loader-container {
+    margin: auto;
+  }
+
+  .loader-container {
+    margin: auto;
+    margin-top: 90px;
+  }
+
+  .loader {
+    width: 200px;
+    height: 100px;
     margin: auto;
   }
 }

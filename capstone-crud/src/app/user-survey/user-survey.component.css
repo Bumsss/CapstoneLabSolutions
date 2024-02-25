@@ -11,6 +11,10 @@
   font-family: "Noto Sans", sans-serif;
 }
 
+p mat-icon {
+  padding-right: 10px;
+}
+
 .mat-drawer-content {
   height: 0;
 }
@@ -76,7 +80,11 @@
 
 @media screen and (max-width: 480px) {
   .container-survey {
-    max-width: 30%;
+    max-width: 25%;
     margin: auto;
+  }
+
+  .container-survey .container-inside .card p {
+    font-size: 0.8em;
   }
 }

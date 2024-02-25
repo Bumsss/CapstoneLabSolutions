@@ -6,11 +6,17 @@ import { Data, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DataService } from '../data.service';
-
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-user-consumable',
   standalone: true,
-  imports: [FormsModule, RouterModule, CommonModule, NgxPaginationModule],
+  imports: [
+    FormsModule,
+    RouterModule,
+    CommonModule,
+    NgxPaginationModule,
+    MatIconModule,
+  ],
   templateUrl: './user-consumable.component.html',
   styleUrl: './user-consumable.component.css',
 })
@@ -43,7 +49,7 @@ export class UserConsumableComponent {
 
   getAllConsumables() {
     this.http
-      .get('http://89.116.21.168:3000/api/consumables')
+      .get('http://localhost:8085/api/consumables')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
 
@@ -108,7 +114,7 @@ export class UserConsumableComponent {
           }
         );
     } else {
-      this.http.get('http://89.116.21.168:3000/api/consumables').subscribe(
+      this.http.get('http://localhost:8085/api/consumables').subscribe(
         (response: any) => {
           this.ConsumableArray = response.data;
         },

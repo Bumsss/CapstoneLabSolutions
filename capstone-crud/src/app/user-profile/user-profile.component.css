@@ -264,7 +264,7 @@ button:nth-child(2) {
   }
 
   .container-profile {
-    width: 40%;
+    width: 32%;
     margin: auto;
     margin-bottom: 30px;
     margin-top: 50px;
@@ -275,9 +275,13 @@ button:nth-child(2) {
   }
 
   .header {
-    width: 400px;
+    width: 320px;
     background-color: var(--darkest-color);
     margin-top: -30px;
+  }
+
+  .container-profile .container-inside .card p {
+    font-size: 0.8em;
   }
 
   input {
@@ -287,5 +291,16 @@ button:nth-child(2) {
     border: 1px solid #ccc;
     font-family: "Noto Sans", sans-serif;
     font-size: 14px;
+  }
+
+  .loader-container {
+    margin: auto;
+    margin-top: 90px;
+  }
+
+  .loader {
+    width: 200px;
+    height: 100px;
+    margin: auto;
   }
 }

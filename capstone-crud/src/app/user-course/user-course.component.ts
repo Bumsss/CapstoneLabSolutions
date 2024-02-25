@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-user-course',
   standalone: true,
-  imports: [CommonModule, RouterModule, NgxPaginationModule],
+  imports: [CommonModule, RouterModule, NgxPaginationModule, MatIconModule],
   templateUrl: './user-course.component.html',
   styleUrl: './user-course.component.css',
 })
@@ -22,7 +23,7 @@ export class UserCourseComponent {
 
   getAllCourses() {
     this.http
-      .get('http://89.116.21.168:3000/api/courses')
+      .get('http://localhost:8085/api/courses')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
 

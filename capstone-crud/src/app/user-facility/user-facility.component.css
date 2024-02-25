@@ -267,13 +267,22 @@ p mat-icon {
 
 @media screen and (max-width: 480px) {
   .container-facilities {
-    max-width: 50%;
+    max-width: 36%;
     margin: auto;
     margin-bottom: 20px;
   }
 
+  .container-facilities .container-inside .card p {
+    font-size: 0.8em;
+  }
+
   .container-facilities .container-inside .container-table table td {
-    font-size: 13px;
+    font-size: 0.8em;
+  }
+
+  .button {
+    padding: 3px 2px;
+    font-size: 0.8em;
   }
 
   .table-pagination-inner {
@@ -286,6 +295,17 @@ p mat-icon {
   }
 
   .loader-container {
+    margin: auto;
+  }
+
+  .loader-container {
+    margin: auto;
+    margin-top: 90px;
+  }
+
+  .loader {
+    width: 200px;
+    height: 100px;
     margin: auto;
   }
 }

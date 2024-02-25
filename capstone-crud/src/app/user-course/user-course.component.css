@@ -202,8 +202,11 @@ p mat-icon {
 
 @media screen and (max-width: 480px) {
   .container-course {
-    max-width: 40%;
+    max-width: 34%;
     margin: auto;
+  }
+  .container-course .container-inside .card p {
+    font-size: 0.8em;
   }
 
   .container-course .container-inside .container-table table td {
@@ -221,5 +224,16 @@ p mat-icon {
 
   .table-pagination-outer {
     display: flex;
+  }
+
+  .loader-container {
+    margin: auto;
+    margin-top: 90px;
+  }
+
+  .loader {
+    width: 200px;
+    height: 100px;
+    margin: auto;
   }
 }

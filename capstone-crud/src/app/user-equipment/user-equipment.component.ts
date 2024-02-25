@@ -5,11 +5,18 @@ import { HttpClient } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-user-equipment',
   standalone: true,
-  imports: [NgxPaginationModule, FormsModule, CommonModule, RouterModule],
+  imports: [
+    NgxPaginationModule,
+    FormsModule,
+    CommonModule,
+    RouterModule,
+    MatIconModule,
+  ],
   templateUrl: './user-equipment.component.html',
   styleUrl: './user-equipment.component.css',
 })
@@ -43,7 +50,7 @@ export class UserEquipmentComponent {
 
   getAllEquipments() {
     this.http
-      .get('http://89.116.21.168:3000/api/equipments/')
+      .get('http://localhost:8085/api/equipments/')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
 
@@ -65,7 +72,7 @@ export class UserEquipmentComponent {
         }
       );
     } else {
-      this.http.get('http://89.116.21.168:3000/api/equipments').subscribe(
+      this.http.get('http://localhost:8085/api/equipments').subscribe(
         (response: any) => {
           this.EquipmentArray = response.data;
         },
