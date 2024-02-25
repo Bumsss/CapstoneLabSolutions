@@ -1,12 +1,13 @@
 /* Start of Main Table format */
-.container-course {
+.container-consumable {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #f3f3f3;
+  background-color: var(--background-color);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.185);
   font-size: 14px;
+  margin-bottom: 20px;
   font-family: "Noto Sans", sans-serif;
 }
 
@@ -14,7 +15,7 @@
   height: 0;
 }
 
-.container-course .container-inside {
+.container-consumable .container-inside {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,8 +26,9 @@
 /* End of Main Table format */
 
 /* Start of Main header format */
-.container-course .container-inside .card form {
-  width: 1000px;
+
+.container-consumable .container-inside .card form {
+  width: 900px;
 }
 
 .header {
@@ -34,7 +36,7 @@
   background-color: var(--darkest-color);
 }
 
-.container-course .container-inside .card p {
+.container-consumable .container-inside .card p {
   display: flex;
   align-items: center;
   padding: 10px;
@@ -47,22 +49,43 @@
 p mat-icon {
   padding-right: 10px;
 }
+
+.container-consumable .container-inside .container-filter {
+  padding: 15px 0px 0px 20px;
+}
+
+.container-consumable .container-inside .container-filter select {
+  padding: 8px 7px;
+  border-style: none;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.185);
+}
+
+.container-consumable .container-inside .container-filter button {
+  padding: 10px 20px;
+  border-style: none;
+  background-color: var(--normal-color);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.5s;
+  margin-left: 10px;
+}
 /* End of Header Table format */
 
 /* Start of Table format */
-.container-course .container-inside .container-table {
+.container-consumable .container-inside .container-table {
   border-spacing: 0;
   width: 100%;
   padding: 0px 0px;
 }
 
-.container-course .container-inside .container-table table {
+.container-consumable .container-inside .container-table table {
   width: 100%;
-  padding: 20px;
+  padding: 0px 20px;
   border-spacing: 0px 10px;
 }
 
-.container-course .container-inside .container-table table th {
+.container-consumable .container-inside .container-table table th {
   color: var(--background-color);
   font-weight: 500;
   padding: 10px 10px;
@@ -70,7 +93,7 @@ p mat-icon {
   background-color: #660066;
 }
 
-.container-course .container-inside .container-table table td {
+.container-consumable .container-inside .container-table table td {
   padding: 10px 20px;
   text-align: center;
   background-color: white;
@@ -79,21 +102,62 @@ p mat-icon {
   color: #5e5e5e;
 }
 
-.container-course .container-inside .container-table table td:nth-child(1) {
+.container-consumable .container-inside .container-table table td:nth-child(1) {
   font-weight: 700;
 }
 
-.container-course .container-inside .container-table table tr:hover {
+.container-consumable .container-inside .container-table table tr:hover {
   background-color: var(--lightest-color);
+}
+
+.stocks-main {
+  margin: auto;
+  font-size: 13px;
+}
+
+.Not-Available,
+.Low-on-Stock,
+.Available {
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.Not-Available:hover,
+.Low-on-Stock:hover,
+.Available:hover {
+  transform: scale(1.1);
+}
+
+.Not-Available {
+  background-color: rgb(143, 143, 143);
+  color: #c9c9c9;
+  width: 110px;
+  padding: 3px 0px;
+  border-radius: 4px;
+}
+
+.Low-on-Stock {
+  background-color: var(--deletebutton-color);
+  color: white;
+  width: 110px;
+  padding: 3px 0px;
+  border-radius: 4px;
+}
+
+.Available {
+  background-color: var(--green-color);
+  color: white;
+  width: 90px;
+  padding: 3px 0px;
+  border-radius: 4px;
 }
 /* End of Table format */
 
-/* Pagination Format */
+/* Start of Pagination format */
 .table-pagination-outer {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr 460px;
   margin: 0px 20px 20px 20px;
-  margin-top: -20px;
   background: var(--darkest-color);
   height: 35px;
 }
@@ -116,8 +180,7 @@ p mat-icon {
 .table-pagination-inner ::ng-deep .ngx-pagination a:hover {
   color: var(--graydarkest-color);
 }
-/* End of Pagination Format */
-
+/* End of Pagination format */
 .loader-container {
   display: flex;
   justify-content: center;
@@ -201,17 +264,14 @@ p mat-icon {
 }
 
 @media screen and (max-width: 480px) {
-  .container-course {
-    max-width: 40%;
+  .container-consumable {
+    max-width: 50%;
     margin: auto;
+    margin-bottom: 20px;
   }
 
-  .container-course .container-inside .container-table table td {
+  .container-consumable .container-inside .container-table table td {
     font-size: 13px;
-  }
-
-  .table-pagination-outer {
-    display: flex;
   }
 
   .table-pagination-inner {
@@ -221,5 +281,9 @@ p mat-icon {
 
   .table-pagination-outer {
     display: flex;
+  }
+
+  .loader-container {
+    margin: auto;
   }
 }
