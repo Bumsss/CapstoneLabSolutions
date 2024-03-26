@@ -10,6 +10,28 @@
   font-family: "Noto Sans", sans-serif;
 }
 
+.sort-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.sort-buttons button {
+  padding: 0;
+  background-color: transparent;
+  font-size: 9px;
+}
+
+.sort-lnamebutton {
+  background-color: none;
+}
+
+th#lname {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .mat-drawer-content {
   height: 0;
 }

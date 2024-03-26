@@ -37,28 +37,51 @@
       <table cellspacing="0">
         <thead>
           <tr>
-            <th scope="col">Last Name</th>
+            <th id="lname" scope="col">
+              Last Name
+              <div class="sort-buttons">
+                <button
+                  class="sort-lnamebutton"
+                  type="button"
+                  (click)="sortLastNameAsc()"
+                >
+                  ▲
+                </button>
+                <button
+                  class="sort-lnamebutton"
+                  type="button"
+                  (click)="sortLastNameDesc()"
+                >
+                  ▼
+                </button>
+              </div>
+            </th>
             <th scope="col">First Name</th>
             <th scope="col">Student Number</th>
             <th scope="col">User Name</th>
             <th scope="col">Password</th>
             <th scope="col">Access Level</th>
-            <th scope="col">isActive</th>
+            <th scope="col">Status</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr
             *ngFor="
-              let user of (filteredUsers.length > 0 ? filteredUsers : users)
+              let user of (filteredUsers && filteredUsers.length > 0
+                ? filteredUsers
+                : users
+              )
                 | paginate
                   : {
                       itemsPerPage: itemsPerPage,
                       currentPage: p,
                       totalItems:
-                        filteredUsers.length > 0
+                        filteredUsers && filteredUsers.length > 0
                           ? filteredUsers.length
-                          : users.length
+                          : users && users.length > 0
+                          ? users.length
+                          : 0
                     }
             "
           >

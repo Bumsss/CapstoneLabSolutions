@@ -174,7 +174,7 @@ mat-icon {
 .mdc-list-item {
   display: flex;
   align-items: center;
-  padding: 40px 8px;
+  padding: 35px 8px;
   cursor: pointer;
 }
 

@@ -196,4 +196,17 @@ export class ManageUsersComponent {
     this.filteredUsers = []; // Clear the filtered users array
     this.p = 1; // Reset pagination to the first page
   }
+
+  sortLastNameAsc() {
+    this.users.sort((a, b) =>
+      a.LastName > b.LastName ? 1 : b.LastName > a.LastName ? -1 : 0
+    );
+  }
+
+  // Add sorting function for last name alphabetically descending
+  sortLastNameDesc() {
+    this.users.sort((a, b) =>
+      a.LastName < b.LastName ? 1 : b.LastName < a.LastName ? -1 : 0
+    );
+  }
 }

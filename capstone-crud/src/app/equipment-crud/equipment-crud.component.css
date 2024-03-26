@@ -124,6 +124,17 @@ p mat-icon {
   .container-inside
   .card
   .container-form-group
+  input[type="number"] {
+  padding: 10px;
+  border-style: none;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.185);
+  text-align: center;
+}
+
+.container-equipment-crud
+  .container-inside
+  .card
+  .container-form-group
   input[type="date"] {
   padding: 10px 37px;
   border-style: none;
@@ -216,6 +227,10 @@ p mat-icon {
   background-color: var(--darkest2-color);
 }
 
+.container-equipment-crud .container-inside .container-search button:hover {
+  background-color: var(--darkest2-color);
+}
+
 .container-equipment-crud
   .container-inside
   .card
@@ -224,8 +239,24 @@ p mat-icon {
   grid-column-start: 4;
 }
 
+.container-equipment-crud .container-inside .container-filter-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .container-equipment-crud .container-inside .container-filter {
-  padding: 15px 0px 0px 20px;
+  padding: 0px 0px 0px 20px;
+}
+
+.container-equipment-crud .container-inside .container-search {
+  padding: 0px 20px 0px 0px;
+}
+
+.container-equipment-crud .container-inside .container-search input {
+  padding: 8px 7px;
+  border-style: none;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.185);
 }
 
 .container-equipment-crud .container-inside .container-filter select {
@@ -235,6 +266,17 @@ p mat-icon {
 }
 
 .container-equipment-crud .container-inside .container-filter button {
+  padding: 10px 20px;
+  border-style: none;
+  background-color: var(--normal-color);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.5s;
+  margin-left: 10px;
+}
+
+.container-equipment-crud .container-inside .container-search button {
   padding: 10px 20px;
   border-style: none;
   background-color: var(--normal-color);

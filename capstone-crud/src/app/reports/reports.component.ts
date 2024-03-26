@@ -35,12 +35,15 @@ export class ReportsComponent {
   EquipmentArray: any[] = [];
   AccountsArray: any[] = [];
 
+  originalTransactionArray: any[] = [];
+
   CourseID: number | null = null;
   EquipmentID: number | null = null;
   AccountID: number | null = null;
   Quantity: number | null = null;
   DateCreated: Date = new Date();
   DateReturned: Date | null = null;
+  DueDate: Date | null = null;
 
   currentID = '';
   minDate!: string;
@@ -52,8 +55,13 @@ export class ReportsComponent {
   p: number = 1;
   itemsPerPage: number = 7;
 
+  isPDF: boolean = false;
+
   @ViewChild('content') content!: ElementRef;
+
   public SavePDF(): void {
+    this.isPDF = true; // Set isPDF to true before generating the PDF
+
     const content = this.content.nativeElement;
     const doc = new jsPDF();
     const title = 'Monthly Equipment Requisition Report';
@@ -69,10 +77,8 @@ export class ReportsComponent {
     });
 
     doc.save('reports.pdf');
-  }
 
-  printTable(): void {
-    window.print();
+    this.isPDF = false; // Reset isPDF to false after generating the PDF
   }
 
   constructor(
@@ -98,7 +104,6 @@ export class ReportsComponent {
       .get('http://localhost:8085/api/equipmentTrans/')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-
         this.TransactionArray = resultData.data;
         this.TransactionArray.forEach((transaction: any) => {
           transaction.CourseName = this.getCourseName(transaction.CourseID);
@@ -123,6 +128,7 @@ export class ReportsComponent {
       AccountID: this.AccountID,
       Quantity: this.Quantity,
       DateCreated: this.datePipe.transform(this.DateCreated, 'yyyy-MM-dd'),
+      DueDate: this.datePipe.transform(this.DueDate, 'yyyy-MM-dd'),
       DateReturned: this.datePipe.transform(this.DateReturned, 'yyyy-MM-dd'),
     };
 
@@ -133,7 +139,6 @@ export class ReportsComponent {
         this.fetchTransactions();
         this.clearDropdownSelections();
       });
-    this.clearInputs();
   }
   clearDropdownSelections() {
     this.CourseID = null;
@@ -141,14 +146,16 @@ export class ReportsComponent {
     this.AccountID = null;
     this.Quantity = null;
     this.DateReturned = null;
+    this.DueDate = null;
   }
-
+  // -------------------------------------
   setUpdate(data: any) {
     this.CourseID = data.CourseID;
     this.EquipmentID = data.EquipmentID;
     this.AccountID = data.AccountID;
     this.Quantity = data.Quantity;
     this.DateCreated = data.DateCreated;
+    this.DueDate = data.DueDate;
     this.DateReturned = data.DateReturned;
 
     this.currentID = data.TransactionEquipID;
@@ -161,6 +168,7 @@ export class ReportsComponent {
       AccountID: this.AccountID,
       Quantity: this.Quantity,
       DateCreated: this.datePipe.transform(this.DateCreated, 'yyyy-MM-dd'),
+      DueDate: this.datePipe.transform(this.DueDate, 'yyyy-MM-dd'),
       DateReturned: this.datePipe.transform(this.DateReturned, 'yyyy-MM-dd'),
     };
     this.http
@@ -174,7 +182,6 @@ export class ReportsComponent {
         alert('Transaction Updated Successfully!');
         this.fetchTransactions();
       });
-    this.clearInputs();
   }
   save() {
     if (this.currentID == '') {
@@ -182,15 +189,6 @@ export class ReportsComponent {
     } else {
       this.UpdateRecords();
     }
-    this.clearInputs();
-  }
-
-  clearInputs() {
-    this.CourseID = 0;
-    this.EquipmentID = 0;
-    this.AccountID = 0;
-    this.Quantity = 0;
-    this.DateReturned = new Date();
   }
 
   setDelete(data: any) {
@@ -230,10 +228,10 @@ export class ReportsComponent {
 
   onCourseChange(): void {
     if (this.CourseID) {
-      this.cdr.detectChanges();
       this.reportService.getEquipmentsByCourseId(this.CourseID).subscribe(
         (response: any) => {
           this.EquipmentArrayForSelectedCourse = response.data;
+          this.cdr.detectChanges();
         },
         (error) => {
           console.error('Error fetching equipments by course:', error);
@@ -241,7 +239,6 @@ export class ReportsComponent {
       );
     }
   }
-
   loadEquipments(): void {
     this.reportService.getEquipment().subscribe(
       (response: any) => {
@@ -252,20 +249,25 @@ export class ReportsComponent {
       }
     );
   }
-
   loadUsers(): void {
     this.reportService.getUsers().subscribe(
       (response: any) => {
-        this.AccountsArray = response.data;
-        this.AccountsArray.forEach((user: any) => {
-          user.FullName = `${user.LastName} ${user.FirstName}`;
-        });
+        // Check if response.data is defined and an array
+        if (response && Array.isArray(response)) {
+          this.AccountsArray = response;
+          this.AccountsArray.forEach((user: any) => {
+            user.FullName = `${user.LastName} ${user.FirstName}`;
+          });
+        } else {
+          console.error('Error: response.data is not an array or is undefined');
+        }
       },
       (error) => {
         console.error('Error fetching Users:', error);
       }
     );
   }
+
   getCourseName(CourseID: number): string {
     const course = this.CourseArray.find((c) => c.CourseID === CourseID);
     return course ? course.CourseName : '';
@@ -291,5 +293,30 @@ export class ReportsComponent {
           StudentNum: account.StudentNum,
         }
       : null;
+  }
+
+  getStatus(DateReturned: Date | null): string {
+    return DateReturned ? 'Returned' : 'Unreturned';
+  }
+
+  selectedStatus: string = 'all';
+
+  applyFilter() {
+    // Reset pagination to the first page when applying filter
+    this.p = 1;
+
+    // Apply the selected filter directly to the TransactionArray
+    if (this.selectedStatus === 'Unreturned') {
+      this.TransactionArray = this.TransactionArray.filter(
+        (transaction) => !transaction.DateReturned
+      );
+    } else if (this.selectedStatus === 'Returned') {
+      this.TransactionArray = this.TransactionArray.filter(
+        (transaction) => transaction.DateReturned
+      );
+    } else {
+      // If 'All' is selected, reset the transactions array to original data
+      this.fetchTransactions();
+    }
   }
 }

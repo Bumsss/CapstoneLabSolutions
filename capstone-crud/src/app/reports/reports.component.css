@@ -79,7 +79,7 @@ p mat-icon {
 
 .container-equipment-reports .container-inside .card .container-form-group {
   display: grid;
-  grid-template-columns: 1fr 200px 270px 180px 200px 200px 1fr;
+  grid-template-columns: 1fr 200px 270px 180px 200px 200px 200px 1fr;
   margin-top: 10px;
   width: 100%;
 }
@@ -126,6 +126,13 @@ p mat-icon {
   .container-form-group
   input[type="date"] {
   padding: 10px 37px;
+  border-style: none;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.185);
+  text-align: center;
+}
+
+input#DateReturned {
+  padding: 10px 44px;
   border-style: none;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.185);
   text-align: center;
@@ -433,6 +440,14 @@ p mat-icon {
   grid-template-columns: 1fr 180px;
   padding: 10px 30px 0px 30px;
   grid-column-start: 2;
+}
+
+.filter-container select {
+  padding: 8px 5px;
+  border-style: none;
+  margin-left: 3px;
+  background-color: var(--normal-color);
+  color: var(--background-color);
 }
 
 .pdf-button input[type="button"] {
