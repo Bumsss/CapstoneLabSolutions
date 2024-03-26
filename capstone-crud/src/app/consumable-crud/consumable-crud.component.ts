@@ -47,7 +47,7 @@ export class ConsumableCrudComponent {
   SelectedCourseID: number | null = null;
 
   minDate: string;
-
+  searchValue: string = '';
   p: number = 1;
   itemsPerPage: number = 7;
 
