@@ -22,6 +22,7 @@
   margin-bottom: 0px;
   border: 1px solid #ccc;
 }
+
 /* End of Main Table format */
 
 /* Start of Main header format */
@@ -437,7 +438,7 @@ input#DateReturned {
 /* Start of PDF Button format */
 .pdf-button {
   display: grid;
-  grid-template-columns: 1fr 180px;
+  grid-template-columns: 210px 270px 1fr 180px;
   padding: 10px 30px 0px 30px;
   grid-column-start: 2;
 }
@@ -448,10 +449,11 @@ input#DateReturned {
   margin-left: 3px;
   background-color: var(--normal-color);
   color: var(--background-color);
+  cursor: pointer;
 }
 
 .pdf-button input[type="button"] {
-  grid-column: 2;
+  grid-column: 4;
   margin: auto;
   padding: 8px 20px;
   border-style: none;
@@ -466,6 +468,21 @@ input#DateReturned {
 .pdf-button input[type="button"]:hover {
   background-color: var(--darkest-color);
   color: var(--background-color);
+}
+
+.container-filter-date {
+  margin: auto;
+}
+
+.container-filter-date button {
+  padding: 8px 10px;
+  border-style: none;
+  margin-left: 3px;
+  background-color: var(--normal-color);
+  color: var(--background-color);
+  cursor: pointer;
+  margin-right: 2px;
+  border-radius: 4px;
 }
 /* End of PDF Button format */
 

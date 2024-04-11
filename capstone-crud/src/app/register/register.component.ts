@@ -5,6 +5,9 @@ import {
   FormControl,
   Validators,
   ReactiveFormsModule,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
 } from '@angular/forms';
 import { RegisterService } from '../services/register.service';
 import { Router, RouterModule } from '@angular/router';
@@ -37,20 +40,24 @@ export class RegisterComponent implements OnInit {
       LastName: new FormControl('', Validators.required),
       Birthdate: new FormControl('', [
         Validators.required,
-        this.validateBirthday(minDateString),
-      ] as any),
+        this.validateBirthday(),
+      ]),
       StudentNum: new FormControl('', Validators.required),
     });
   }
 
-  validateBirthday(minDate: string) {
-    return (control: FormControl) => {
-      const selectedDate = control.value;
+  validateBirthday(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const selectedDate = new Date(control.value);
+      const today = new Date();
+      const minDate = new Date(
+        today.getFullYear() - 18,
+        today.getMonth(),
+        today.getDate()
+      );
 
-      if (selectedDate) {
-        if (selectedDate > minDate) {
-          return { invalidBirthday: true };
-        }
+      if (selectedDate > today || selectedDate >= minDate) {
+        return { invalidBirthday: true };
       }
 
       return null;

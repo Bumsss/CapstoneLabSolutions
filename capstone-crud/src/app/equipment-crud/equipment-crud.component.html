@@ -45,7 +45,7 @@
               [ngModelOptions]="{ standalone: true }"
               class="form-control"
               id="EquipmentName"
-              placeholder="Equipment Name"
+              placeholder=""
             />
           </div>
 
@@ -57,7 +57,7 @@
               [ngModelOptions]="{ standalone: true }"
               class="form-control"
               id="Quantity"
-              placeholder="Quantity"
+              placeholder=""
             />
           </div>
 
@@ -82,7 +82,7 @@
           </button>
           <button type="submit" class="btn btn-primary mt-4" (click)="save()">
             <mat-icon fontIcon="save" aria-hidden="false"></mat-icon>
-            Save
+            Update
           </button>
         </div>
 
@@ -109,22 +109,52 @@
               [(ngModel)]="searchValue"
               placeholder="Search Equipment Name"
             />
-            <button class="btn btn-primary">Search</button>
-            <button class="btn btn-secondary">Clear</button>
+            <button class="btn btn-primary" (click)="searchEquipment()">
+              Search
+            </button>
+            <button class="btn btn-secondary" (click)="clearSearch()">
+              Clear
+            </button>
+          </div>
+        </div>
+        <div class="pdf-button">
+          <input
+            type="button"
+            value="Download PDF"
+            class="btn btn-success"
+            (click)="SavePDF(EquipmentArray)"
+          />
+
+          <div class="refresh-button">
+            <button class="btn btn-primary" (click)="refreshTable()">
+              <mat-icon fontIcon="refresh" aria-hidden="false"></mat-icon>
+              Refresh Table
+            </button>
           </div>
         </div>
       </form>
     </div>
 
     <div class="container-table">
-      <table cellspacing="0">
+      <table cellspacing="0" id="content" #content>
         <thead>
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Equipment Name</th>
             <th scope="col">Quantity</th>
-            <th scope="col">Calibration Schedule</th>
-            <th scope="col">Actions</th>
+            <th id="lname" scope="col">
+              Calibration Schedule
+              <div class="sort-date">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="toggleSortOrder()"
+                >
+                  <mat-icon>sort</mat-icon>
+                </button>
+              </div>
+            </th>
+            <th scope="col" *ngIf="!isPDF">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -145,7 +175,7 @@
             <td>
               {{ EquipmentItem.CalibrationSchedule | date : "yyyy-MM-dd" }}
             </td>
-            <td class="table-button">
+            <td class="table-button" *ngIf="!isPDF">
               <button
                 type="button"
                 class="btn btn-success"

@@ -22,6 +22,111 @@
   margin-bottom: 0px;
   border: 1px solid #ccc;
 }
+
+.pdf-button {
+  display: grid;
+  grid-template-columns: 1fr 140px 150px;
+  padding: 0px 10px 0px 20px;
+  grid-column-start: 2;
+}
+
+.pdf-button input[type="button"] {
+  grid-column: 3;
+  margin: auto;
+  padding: 8px 20px;
+  border-style: none;
+  background-color: var(--normal-color);
+  color: var(--background-color);
+  border-radius: 4px;
+  transition: 0.5s;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pdf-button input[type="button"]:hover {
+  background-color: var(--darkest-color);
+  color: var(--background-color);
+}
+
+.refresh-button {
+  margin: auto;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.refresh-button button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 3px 16px;
+  border-style: none;
+  background-color: var(--normal-color);
+  font-weight: 500;
+  color: var(--background-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.refresh-button button:hover {
+  background-color: var(--darkest-color);
+  color: var(--background-color);
+}
+
+th#lname {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.sort-date {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.sort-date button {
+  padding: 0;
+  background-color: transparent;
+  font-size: 1px;
+  cursor: pointer;
+  color: white;
+  border-style: none;
+  margin-left: 5px;
+}
+
+.container-filter-status {
+  width: 50%;
+  margin-left: 20px;
+  margin-top: -33px;
+  margin-bottom: 10px;
+}
+
+.container-filter-status button {
+  padding: 10px 20px;
+  border-style: none;
+  background-color: var(--normal-color);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.5s;
+  margin-left: 10px;
+}
+
+.container-filter-status button:hover {
+  background-color: var(--darkest-color);
+  color: var(--background-color);
+}
+
+.container-filter-status select {
+  padding: 8px 7px;
+  border-style: none;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.185);
+  width: 31.5%;
+}
+
 /* End of Main Table Format */
 
 /* Start of Header table format */
@@ -114,6 +219,17 @@ p mat-icon {
   .card
   .container-form-group
   input[type="text"] {
+  padding: 10px;
+  border-style: none;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.185);
+  text-align: center;
+}
+
+.container-consumable-crud
+  .container-inside
+  .card
+  .container-form-group
+  input[type="number"] {
   padding: 10px;
   border-style: none;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.185);
@@ -223,6 +339,7 @@ p mat-icon {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 20px 0px 20px 0px;
 }
 
 .container-consumable-crud .container-inside .container-filter {

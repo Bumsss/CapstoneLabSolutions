@@ -22,6 +22,30 @@
   margin-bottom: 20px;
   border: 1px solid #ccc;
 }
+
+th#lname {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.sort-date {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.sort-date button {
+  padding: 0;
+  background-color: transparent;
+  font-size: 1px;
+  cursor: pointer;
+  color: white;
+  border-style: none;
+  margin-left: 5px;
+}
+
 /* End of Main Table format */
 
 /* Start of Main header format */
@@ -243,6 +267,7 @@ p mat-icon {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 20px 0px 20px 0px;
 }
 
 .container-equipment-crud .container-inside .container-filter {
@@ -286,6 +311,58 @@ p mat-icon {
   transition: 0.5s;
   margin-left: 10px;
 }
+
+.pdf-button {
+  display: grid;
+  grid-template-columns: 1fr 140px 150px;
+  padding: 0px 10px 0px 30px;
+  grid-column-start: 2;
+}
+
+.pdf-button input[type="button"] {
+  grid-column: 3;
+  margin: auto;
+  padding: 8px 20px;
+  border-style: none;
+  background-color: var(--normal-color);
+  color: var(--background-color);
+  border-radius: 4px;
+  transition: 0.5s;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pdf-button input[type="button"]:hover {
+  background-color: var(--darkest-color);
+  color: var(--background-color);
+}
+
+.refresh-button {
+  margin: auto;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.refresh-button button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 3px 16px;
+  border-style: none;
+  background-color: var(--normal-color);
+  font-weight: 500;
+  color: var(--background-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.refresh-button button:hover {
+  background-color: var(--darkest-color);
+  color: var(--background-color);
+}
+
 /* End of Header Table format */
 
 /* Start of Table format */
@@ -316,10 +393,6 @@ p mat-icon {
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.185);
   font-weight: 400;
   color: #5e5e5e;
-}
-
-.container-equipment-crud .container-inside .container-table table tr:hover {
-  background-color: var(--lightest-color);
 }
 
 .container-equipment-crud

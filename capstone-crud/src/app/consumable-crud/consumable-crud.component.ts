@@ -1,4 +1,9 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Data, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -6,11 +11,15 @@ import { AppComponent } from '../app.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { EquipmentCrudComponent } from '../equipment-crud/equipment-crud.component';
+// ===================
 import { CourseCrudComponent } from '../course-crud/course-crud.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DataService } from '../data.service';
 import { MatIconModule } from '@angular/material/icon';
 import { DatePipe } from '@angular/common';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-consumable-crud',
@@ -37,21 +46,94 @@ export class ConsumableCrudComponent {
   isResultLoaded = false;
   isUpdateFormActive = false;
 
+  searchValue: string = '';
+  searchResult: any[] = [];
+
   currentID = '';
   CourseID!: number;
   ConsumableName: string = '';
-  Quantity: string = '';
+  Quantity?: number;
   ConsumableStat: string = '';
   ExpirationDate: Date | null = null;
 
   SelectedCourseID: number | null = null;
 
   minDate: string;
-  searchValue: string = '';
+
   p: number = 1;
-  itemsPerPage: number = 7;
+  itemsPerPage: number = 5;
 
   private emailSent = false;
+
+  isPDF: boolean = false;
+
+  @ViewChild('content') content!: ElementRef;
+  public SavePDF(consumables: any[]): void {
+    // Clone the HTML content of the table
+    const content = this.content.nativeElement.cloneNode(true);
+
+    // Remove action column if present
+    const actionsColumnHeader = content.querySelector('th:last-child');
+    if (actionsColumnHeader) {
+      actionsColumnHeader.remove();
+    }
+
+    // Create a new jsPDF instance
+    const doc = new jsPDF();
+
+    // Add title and date
+    const title = 'Consumable Report';
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().split('T')[0];
+    doc.text(title, 14, 10);
+    doc.text(`Generated on: ${formattedDate}`, 14, 18);
+
+    // Convert HTML content to array of data
+    const data = this.extractTableData(content, consumables);
+
+    // Generate PDF using jspdf-autotable
+    autoTable(doc, {
+      head: [
+        ['ID', 'Consumable Name', 'Quantity', 'Status', 'Expiration Date'],
+      ],
+      body: data,
+      startY: 30,
+    });
+
+    // Save the PDF
+    doc.save('Consumable.pdf');
+  }
+
+  // Helper method to extract table data from HTML content
+  private extractTableData(content: HTMLElement, consumables: any[]): any[] {
+    const data: any[] = [];
+    const rows = content.querySelectorAll('tr');
+
+    // Iterate over rows and extract cell data
+    rows.forEach((row) => {
+      const rowData: any[] = [];
+      const cells = row.querySelectorAll('td');
+      cells.forEach((cell) => {
+        rowData.push(cell.textContent ?? '');
+      });
+
+      if (rowData.length > 0) {
+        data.push(rowData);
+      }
+    });
+
+    consumables.forEach((consumable, index) => {
+      data[index] = [
+        consumable.ConsumableID,
+        consumable.ConsumableName,
+        consumable.Quantity,
+        this.getStatusString(consumable.Quantity),
+        consumable.ExpirationDate,
+      ];
+    });
+
+    return data;
+  }
 
   constructor(
     private http: HttpClient,
@@ -78,22 +160,37 @@ export class ConsumableCrudComponent {
       });
   }
 
-  register() {
-    let bodyData = {
-      ConsumableName: this.ConsumableName,
-      Quantity: this.Quantity,
-      ExpirationDate: this.ExpirationDate || null,
-      CourseID: this.CourseID,
-    };
+  validateInputs(): boolean {
+    return (
+      this.ConsumableName.trim() !== '' &&
+      this.Quantity !== null &&
+      this.Quantity !== undefined &&
+      this.Quantity > 0 &&
+      this.CourseID !== null
+    );
+  }
 
-    this.http
-      .post('http://localhost:8085/api/consumables/add', bodyData)
-      .subscribe((resultData: any) => {
-        console.log(resultData);
-        alert('Consumable Added Successfully!');
-        this.getAllConsumables();
-      });
-    this.clearInputs();
+  register() {
+    if (this.checkDuplicateCourse(this.ConsumableName)) {
+      alert('Consumable with the same name already exists.');
+      return;
+    }
+    if (this.validateInputs()) {
+      let bodyData = {
+        ConsumableName: this.ConsumableName,
+        Quantity: this.Quantity,
+        ExpirationDate: this.ExpirationDate || null,
+        CourseID: this.CourseID,
+      };
+
+      this.http
+        .post('http://localhost:8085/api/consumables/add', bodyData)
+        .subscribe((resultData: any) => {
+          alert('Consumable Added Successfully!');
+          this.getAllConsumables();
+        });
+      this.clearInputs();
+    }
   }
 
   setUpdate(data: any) {
@@ -114,17 +211,21 @@ export class ConsumableCrudComponent {
       ),
       CourseID: this.CourseID,
     };
-
-    this.http
-      .put(
-        'http://localhost:8085/api/consumables/update' + '/' + this.currentID,
-        bodyData
-      )
-      .subscribe((resultData: any) => {
-        alert('Consumable Updated Successfully!');
-        this.getAllConsumables();
-      });
-    this.clearInputs();
+    const editConfirmation = window.confirm(
+      'Are you sure you want to update this record?'
+    );
+    if (editConfirmation) {
+      this.http
+        .put(
+          'http://localhost:8085/api/consumables/update' + '/' + this.currentID,
+          bodyData
+        )
+        .subscribe((resultData: any) => {
+          alert('Consumable Updated Successfully!');
+          this.getAllConsumables();
+        });
+      this.clearInputs();
+    }
   }
 
   save() {
@@ -139,7 +240,7 @@ export class ConsumableCrudComponent {
   clearInputs() {
     this.CourseID = 0;
     this.ConsumableName = '';
-    this.Quantity = '';
+    this.Quantity = 0;
     this.ExpirationDate = null;
   }
 
@@ -224,13 +325,15 @@ export class ConsumableCrudComponent {
       }
 
       this.http
-        .post('http://localhost:8085/send-email', { content: emailContent })
+        .post('http://localhost:8085/send-email', {
+          content: emailContent,
+        })
         .subscribe(
           (response) => {
             this.emailSent = true;
           },
           (error) => {
-            console.error('Error sending email:', error);
+            // console.error('Error sending email:', error);
           }
         );
     }
@@ -255,7 +358,6 @@ export class ConsumableCrudComponent {
 
   clearFilter(): void {
     this.SelectedCourseID = null;
-
     this.changeDetectorRef.detectChanges();
     this.filterConsumables();
   }
@@ -297,5 +399,79 @@ export class ConsumableCrudComponent {
           }
         );
     }
+  }
+  selectedStatus: string = 'all';
+  searchConsumables() {
+    if (this.searchValue.trim() !== '') {
+      const searchTerm = this.searchValue.trim().toLowerCase();
+      this.http.get('http://localhost:8085/api/consumables').subscribe(
+        (response: any) => {
+          this.ConsumableArray = response.data.filter((consumable: any) =>
+            consumable.ConsumableName.toLowerCase().includes(searchTerm)
+          );
+        },
+        (error) => {
+          console.error('Error searching equipment:', error);
+        }
+      );
+    } else {
+      this.getAllConsumables();
+    }
+  }
+
+  clearSearch() {
+    this.searchValue = '';
+    this.getAllConsumables();
+  }
+
+  applyFilter() {
+    this.p = 1; // Reset pagination to first page
+
+    if (this.selectedStatus === 'low') {
+      this.ConsumableArray = this.ConsumableArray.filter(
+        (consumable) => consumable.Quantity < 5
+      );
+    } else if (this.selectedStatus === 'not_available') {
+      this.ConsumableArray = this.ConsumableArray.filter(
+        (consumable) => consumable.Quantity <= 0
+      );
+    } else if (this.selectedStatus === 'available') {
+      this.ConsumableArray = this.ConsumableArray.filter(
+        (consumable) => consumable.Quantity > 5
+      );
+    } else {
+      // Reset the filter and fetch all consumables
+      this.getAllConsumables();
+    }
+  }
+
+  checkDuplicateCourse(consumableName: string): boolean {
+    const lowerCaseCode = consumableName.trim().toLowerCase();
+
+    return this.ConsumableArray.some((consumable) => {
+      return consumable.ConsumableName.trim().toLowerCase() === lowerCaseCode;
+    });
+  }
+
+  isAscendingSort: boolean = true;
+  sortConsumablesByExpirationDate(): void {
+    this.ConsumableArray.sort((a, b) => {
+      const dateA = new Date(a.ExpirationDate);
+      const dateB = new Date(b.ExpirationDate);
+      if (this.isAscendingSort) {
+        return dateA.getTime() - dateB.getTime();
+      } else {
+        return dateB.getTime() - dateA.getTime();
+      }
+    });
+  }
+
+  toggleSortOrder(): void {
+    this.isAscendingSort = !this.isAscendingSort;
+    this.sortConsumablesByExpirationDate();
+  }
+
+  refreshTable(): void {
+    this.getAllConsumables();
   }
 }

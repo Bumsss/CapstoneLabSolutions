@@ -1,4 +1,9 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -7,11 +12,14 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ConsumableCrudComponent } from '../consumable-crud/consumable-crud.component';
 import { MatIconModule } from '@angular/material/icon';
+// =============
 import { CourseCrudComponent } from '../course-crud/course-crud.component';
 import { DataService } from '../data.service';
-
+// import { MatPaginatorModule} from '@angular/material/paginator';
 import { DatePipe } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-equipment-crud',
@@ -46,14 +54,82 @@ export class EquipmentCrudComponent {
 
   currentID = '';
   EquipmentName: string = '';
-  Quantity: string = '';
+  Quantity?: number;
   CourseID!: number;
-  CalibrationSchedule: Date = new Date();
+  CalibrationSchedule: Date | null = null;
 
   minDate: string;
 
   p: number = 1;
-  itemsPerPage: number = 7;
+  itemsPerPage: number = 5;
+
+  isPDF: boolean = false;
+
+  @ViewChild('content') content!: ElementRef;
+  public SavePDF(equipment: any[]): void {
+    // Clone the HTML content of the table
+    const content = this.content.nativeElement.cloneNode(true);
+
+    // Remove action column if present
+    const actionsColumnHeader = content.querySelector('th:last-child');
+    if (actionsColumnHeader) {
+      actionsColumnHeader.remove();
+    }
+
+    // Create a new jsPDF instance
+    const doc = new jsPDF();
+
+    // Add title and date
+    const title = 'Equipment Report';
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().split('T')[0];
+    doc.text(title, 14, 10);
+    doc.text(`Generated on: ${formattedDate}`, 14, 18);
+
+    // Convert HTML content to array of data
+    const data = this.extractTableData(content, equipment);
+
+    // Generate PDF using jspdf-autotable
+    autoTable(doc, {
+      head: [['ID', 'Equipment Name', 'Quantity', 'Calibration Date']],
+      body: data,
+      startY: 30,
+    });
+
+    // Save the PDF
+    doc.save('Equipment.pdf');
+  }
+
+  // Helper method to extract table data from HTML content
+  private extractTableData(content: HTMLElement, equipment: any[]): any[] {
+    const data: any[] = [];
+    const rows = content.querySelectorAll('tr');
+
+    // Iterate over rows and extract cell data
+    rows.forEach((row) => {
+      const rowData: any[] = [];
+      const cells = row.querySelectorAll('td');
+      cells.forEach((cell) => {
+        rowData.push(cell.textContent ?? ''); // Use empty string as default value if textContent is null
+      });
+      // Only add non-empty rows
+      if (rowData.length > 0) {
+        data.push(rowData);
+      }
+    });
+
+    // Replace the first row with consumable data
+    equipment.forEach((equipment, index) => {
+      data[index] = [
+        equipment.EquipmentID,
+        equipment.EquipmentName,
+        equipment.Quantity,
+        equipment.CalibrationSchedule,
+      ];
+    });
+
+    return data;
+  }
 
   constructor(
     private http: HttpClient,
@@ -76,29 +152,45 @@ export class EquipmentCrudComponent {
       .get('http://localhost:8085/api/equipments/')
       .subscribe((resultData: any) => {
         this.isResultLoaded = true;
-
         this.EquipmentArray = resultData.data;
       });
   }
 
-  register() {
-    let bodyData = {
-      EquipmentName: this.EquipmentName,
-      Quantity: this.Quantity,
-      CalibrationSchedule: this.datePipe.transform(
-        this.CalibrationSchedule,
-        'yyyy-MM-dd'
-      ),
-      CourseID: this.CourseID,
-    };
+  validateInputs(): boolean {
+    return (
+      this.EquipmentName.trim() !== '' &&
+      this.Quantity !== null &&
+      this.Quantity !== undefined &&
+      this.Quantity > 0 &&
+      this.CourseID !== null
+    );
+  }
 
-    this.http
-      .post('http://localhost:8085/api/equipments/add', bodyData)
-      .subscribe((resultData: any) => {
-        alert('Equipment Added Successfully!');
-        this.getAllEquipments();
-      });
-    this.clearInputs();
+  register() {
+    if (this.checkDuplicateCourse(this.EquipmentName)) {
+      alert('Equipment with the same name already exists.');
+      return;
+    }
+
+    if (this.validateInputs()) {
+      let bodyData = {
+        EquipmentName: this.EquipmentName,
+        Quantity: this.Quantity,
+        CalibrationSchedule: this.datePipe.transform(
+          this.CalibrationSchedule,
+          'yyyy-MM-dd'
+        ),
+        CourseID: this.CourseID,
+      };
+
+      this.http
+        .post('http://localhost:8085/api/equipments/add', bodyData)
+        .subscribe((resultData: any) => {
+          alert('Equipment Added Successfully!');
+          this.getAllEquipments();
+        });
+      this.clearInputs();
+    }
   }
 
   setUpdate(data: any) {
@@ -119,16 +211,22 @@ export class EquipmentCrudComponent {
       ),
       CourseID: this.CourseID,
     };
+    const editConfirmation = window.confirm(
+      'Are you sure you want to update this record?'
+    );
 
-    this.http
-      .put(
-        'http://localhost:8085/api/equipments/update' + '/' + this.currentID,
-        bodyData
-      )
-      .subscribe((resultData: any) => {
-        alert('Equipment Updated Successfully!');
-        this.getAllEquipments();
-      });
+    if (editConfirmation) {
+      this.http
+        .put(
+          'http://localhost:8085/api/equipments/update' + '/' + this.currentID,
+          bodyData
+        )
+        .subscribe((resultData: any) => {
+          alert('Equipment Updated Successfully!');
+          this.getAllEquipments();
+        });
+      this.clearInputs();
+    }
   }
 
   save() {
@@ -142,9 +240,9 @@ export class EquipmentCrudComponent {
 
   clearInputs() {
     this.EquipmentName = '';
-    this.Quantity = '';
+    this.Quantity = 0;
     this.CourseID = 0;
-    this.CalibrationSchedule = new Date();
+    this.CalibrationSchedule = null;
   }
 
   setDelete(data: any) {
@@ -168,7 +266,7 @@ export class EquipmentCrudComponent {
         );
     }
   }
-
+  // get courses for dropdown
   loadCourses(): void {
     this.dataService.getCourses().subscribe(
       (response: any) => {
@@ -190,7 +288,29 @@ export class EquipmentCrudComponent {
           console.error('Error connecting to API: ', error);
         }
       );
+    }
+  }
+
+  clearFilter(): void {
+    this.SelectedCourseID = null;
+    this.changeDetectorRef.detectChanges();
+    this.filterEquipment();
+  }
+
+  filterEquipment(): void {
+    if (this.SelectedCourseID !== null) {
+      this.dataService
+        .getConsumablesByCourseId(this.SelectedCourseID)
+        .subscribe(
+          (response: any) => {
+            this.EquipmentArray = response.data;
+          },
+          (error) => {
+            console.error('Error connecting to API: ', error);
+          }
+        );
     } else {
+      // If SelectedCourseID is null, fetch all consumables
       this.http.get('http://localhost:8085/api/equipments').subscribe(
         (response: any) => {
           this.EquipmentArray = response.data;
@@ -200,13 +320,6 @@ export class EquipmentCrudComponent {
         }
       );
     }
-  }
-
-  clearFilter(): void {
-    this.SelectedCourseID = null;
-
-    this.changeDetectorRef.detectChanges();
-    this.filterEquipments();
   }
 
   assignCourse(): void {
@@ -220,5 +333,57 @@ export class EquipmentCrudComponent {
         }
       );
     }
+  }
+
+  searchEquipment() {
+    if (this.searchValue.trim() !== '') {
+      const searchTerm = this.searchValue.trim().toLowerCase();
+      this.http.get('http://localhost:8085/api/equipments').subscribe(
+        (response: any) => {
+          this.EquipmentArray = response.data.filter((equipment: any) =>
+            equipment.EquipmentName.toLowerCase().includes(searchTerm)
+          );
+        },
+        (error) => {
+          console.error('Error searching equipment:', error);
+        }
+      );
+    } else {
+      this.getAllEquipments();
+    }
+  }
+
+  clearSearch() {
+    this.searchValue = '';
+    this.getAllEquipments();
+  }
+
+  checkDuplicateCourse(equipmentName: string): boolean {
+    const lowerCaseCode = equipmentName.trim().toLowerCase();
+
+    return this.EquipmentArray.some((equipment) => {
+      return equipment.EquipmentName.trim().toLowerCase() === lowerCaseCode;
+    });
+  }
+  isAscendingSort: boolean = true;
+  sortEquipmentByExpirationDate(): void {
+    this.EquipmentArray.sort((a, b) => {
+      const dateA = new Date(a.CalibrationSchedule);
+      const dateB = new Date(b.CalibrationSchedule);
+      if (this.isAscendingSort) {
+        return dateA.getTime() - dateB.getTime();
+      } else {
+        return dateB.getTime() - dateA.getTime();
+      }
+    });
+  }
+
+  toggleSortOrder(): void {
+    this.isAscendingSort = !this.isAscendingSort;
+    this.sortEquipmentByExpirationDate();
+  }
+
+  refreshTable(): void {
+    this.getAllEquipments();
   }
 }

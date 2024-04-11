@@ -81,7 +81,7 @@
           </div>
 
           <div class="form-group">
-            <label>Due Date</label>
+            <label>Due Date*</label>
             <input
               type="date"
               [(ngModel)]="DueDate"
@@ -126,6 +126,19 @@
               <option value="Returned">Returned</option>
             </select>
           </div>
+
+          <div class="container-filter-date">
+            Filter by Date:
+            <button class="btn btn-primary" (click)="filterByDate('week')">
+              Week
+            </button>
+            <button class="btn btn-primary" (click)="filterByDate('month')">
+              Month
+            </button>
+            <button class="btn btn-primary" (click)="filterByDate('year')">
+              Year
+            </button>
+          </div>
           <input
             type="button"
             value="Download PDF"
@@ -140,17 +153,16 @@
       <table class="container" #content cellspacing="0">
         <thead>
           <tr>
-            <th scope="col">TransactionEquipID</th>
-            <th scope="col">Course ID</th>
+            <th scope="col">Transaction ID</th>
+            <th scope="col">Course</th>
             <th scope="col">Equipment Name</th>
-            <th scope="col">Account ID</th>
+            <th scope="col">Account Name</th>
             <th scope="col">ID Number</th>
             <th scope="col">Quantity</th>
             <th scope="col">Date Created</th>
-            <th scope="col">Due Date</th>
+            <th scope="col">Due Date*</th>
             <th scope="col">Date Returned</th>
             <th scope="col">Status</th>
-            <!-- Render the "Actions" column only if not generating PDF -->
             <th scope="col" *ngIf="!isPDF">Actions</th>
           </tr>
         </thead>
@@ -178,8 +190,6 @@
             <td>{{ TransactionItem.DueDate | date : "yyyy-MM-dd" }}</td>
             <td>{{ TransactionItem.DateReturned | date : "yyyy-MM-dd" }}</td>
             <td>{{ getStatus(TransactionItem.DateReturned) }}</td>
-
-            <!-- Render the "Actions" cell only if not generating PDF -->
             <td class="table-button" *ngIf="!isPDF">
               <button
                 type="button"

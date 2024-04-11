@@ -60,9 +60,23 @@ export class ReportsComponent {
   @ViewChild('content') content!: ElementRef;
 
   public SavePDF(): void {
-    this.isPDF = true; // Set isPDF to true before generating the PDF
+    this.isPDF = true;
 
-    const content = this.content.nativeElement;
+    const content = this.content.nativeElement.cloneNode(true);
+
+    const actionsColumn = content.querySelector('th:nth-child(11)');
+    if (actionsColumn) {
+      actionsColumn.remove();
+
+      const rows = content.querySelectorAll('tr');
+      rows.forEach((row: { querySelectorAll: (arg0: string) => any }) => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length === 11) {
+          cells[10].remove();
+        }
+      });
+    }
+
     const doc = new jsPDF();
     const title = 'Monthly Equipment Requisition Report';
     const currentDate = new Date();
@@ -78,7 +92,7 @@ export class ReportsComponent {
 
     doc.save('reports.pdf');
 
-    this.isPDF = false; // Reset isPDF to false after generating the PDF
+    this.isPDF = false;
   }
 
   constructor(
@@ -91,12 +105,16 @@ export class ReportsComponent {
 
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
+
+    this.isPDF = false;
   }
 
   ngOnInit(): void {
     this.loadCourses();
     this.loadEquipments();
     this.loadUsers();
+
+    this.isPDF = false;
   }
 
   fetchTransactions() {
@@ -118,27 +136,41 @@ export class ReportsComponent {
             transaction.StudentNum = '';
           }
         });
+        this.originalTransactionArray = [...this.TransactionArray];
       });
   }
 
-  register() {
-    let bodyData = {
-      CourseID: this.CourseID,
-      EquipmentID: this.EquipmentID,
-      AccountID: this.AccountID,
-      Quantity: this.Quantity,
-      DateCreated: this.datePipe.transform(this.DateCreated, 'yyyy-MM-dd'),
-      DueDate: this.datePipe.transform(this.DueDate, 'yyyy-MM-dd'),
-      DateReturned: this.datePipe.transform(this.DateReturned, 'yyyy-MM-dd'),
-    };
+  validateInputs(): boolean {
+    return (
+      this.CourseID !== null &&
+      this.EquipmentID !== null &&
+      this.AccountID !== null &&
+      this.Quantity !== null &&
+      this.DateCreated !== null &&
+      this.DueDate !== null
+    );
+  }
 
-    this.http
-      .post('http://localhost:8085/api/equipmentTrans/add', bodyData)
-      .subscribe((resultData: any) => {
-        alert('Transaction Created!');
-        this.fetchTransactions();
-        this.clearDropdownSelections();
-      });
+  register() {
+    if (this.validateInputs()) {
+      let bodyData = {
+        CourseID: this.CourseID,
+        EquipmentID: this.EquipmentID,
+        AccountID: this.AccountID,
+        Quantity: this.Quantity,
+        DateCreated: this.datePipe.transform(this.DateCreated, 'yyyy-MM-dd'),
+        DueDate: this.datePipe.transform(this.DueDate, 'yyyy-MM-dd'),
+        DateReturned: this.datePipe.transform(this.DateReturned, 'yyyy-MM-dd'),
+      };
+
+      this.http
+        .post('http://localhost:8085/api/equipmentTrans/add', bodyData)
+        .subscribe((resultData: any) => {
+          alert('Transaction Created!');
+          this.fetchTransactions();
+          this.clearDropdownSelections();
+        });
+    }
   }
   clearDropdownSelections() {
     this.CourseID = null;
@@ -252,7 +284,6 @@ export class ReportsComponent {
   loadUsers(): void {
     this.reportService.getUsers().subscribe(
       (response: any) => {
-        // Check if response.data is defined and an array
         if (response && Array.isArray(response)) {
           this.AccountsArray = response;
           this.AccountsArray.forEach((user: any) => {
@@ -302,10 +333,8 @@ export class ReportsComponent {
   selectedStatus: string = 'all';
 
   applyFilter() {
-    // Reset pagination to the first page when applying filter
     this.p = 1;
 
-    // Apply the selected filter directly to the TransactionArray
     if (this.selectedStatus === 'Unreturned') {
       this.TransactionArray = this.TransactionArray.filter(
         (transaction) => !transaction.DateReturned
@@ -315,8 +344,54 @@ export class ReportsComponent {
         (transaction) => transaction.DateReturned
       );
     } else {
-      // If 'All' is selected, reset the transactions array to original data
       this.fetchTransactions();
+    }
+  }
+
+  filterByDate(period: string) {
+    const today = new Date();
+    let startDate: Date | null = null;
+    let endDate: Date | null = null;
+
+    switch (period) {
+      case 'week':
+        startDate = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate() - today.getDay()
+        );
+        endDate = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate() + (6 - today.getDay())
+        );
+        break;
+      case 'month':
+        startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+        endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        break;
+      case 'year':
+        startDate = new Date(today.getFullYear(), 0, 1);
+        endDate = new Date(today.getFullYear(), 11, 31);
+        break;
+      default:
+        startDate = null;
+        endDate = null;
+        break;
+    }
+
+    if (startDate !== null && endDate !== null) {
+      this.TransactionArray = this.originalTransactionArray.filter(
+        (transaction) => {
+          const dueDate = new Date(transaction.DueDate);
+          // Check if startDate and endDate are not null before comparison
+          return startDate && endDate
+            ? dueDate >= startDate && dueDate <= endDate
+            : false;
+        }
+      );
+    } else {
+      this.TransactionArray = this.originalTransactionArray;
     }
   }
 }
