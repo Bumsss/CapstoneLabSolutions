@@ -42,6 +42,18 @@
               placeholder="Room Description"
             />
           </div>
+
+          <div class="form-group">
+            <label>Available By: </label>
+            <input
+              type="datetime-local"
+              [(ngModel)]="DateAvailable"
+              [ngModelOptions]="{ standalone: true }"
+              class="form-control"
+              id="DateAvailable"
+              placeholder="DD-MM-YYYY"
+            />
+          </div>
         </div>
 
         <div class="container-button">
@@ -51,10 +63,14 @@
           </button>
           <button type="submit" class="btn btn-primary mt-4" (click)="save()">
             <mat-icon fontIcon="save" aria-hidden="false"> </mat-icon>
-            Save
+            Update
           </button>
         </div>
       </form>
+    </div>
+
+    <div class="current-date">
+      <h4><span>Date Today:</span> {{ currentDate | date : "medium" }}</h4>
     </div>
 
     <div class="container-table">
@@ -64,6 +80,7 @@
             <th scope="col">Room ID</th>
             <th scope="col">Room</th>
             <th scope="col">Room Description</th>
+            <th scope="col">Available By:</th>
             <th scope="col">Room Status</th>
             <th scope="col">Actions</th>
           </tr>
@@ -83,6 +100,16 @@
             <td>{{ RoomItem.RoomID }}</td>
             <td>{{ RoomItem.RoomName }}</td>
             <td>{{ RoomItem.RoomDesc }}</td>
+            <td>
+              <ng-container *ngIf="RoomItem.DateAvailable">
+                {{ adjustTimeZone(RoomItem.DateAvailable) }}
+              </ng-container>
+              <ng-container *ngIf="!RoomItem.DateAvailable">
+                N/A
+                <!-- Display "N/A" if DateAvailable is null -->
+              </ng-container>
+            </td>
+
             <td>
               <button
                 class="active-button"

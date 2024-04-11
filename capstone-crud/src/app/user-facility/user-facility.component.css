@@ -244,6 +244,27 @@ p mat-icon {
   animation: loading 0.6s alternate infinite;
 }
 
+.refresh-button {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  margin-top: 10px;
+}
+
+.refresh-button button {
+  border-style: none;
+  background-color: var(--normal-color);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.5s;
+  margin-left: 10px;
+  grid-column: 2;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @keyframes bit {
   from {
     opacity: 0.3;
@@ -267,9 +288,25 @@ p mat-icon {
 
 @media screen and (max-width: 480px) {
   .container-facilities {
-    max-width: 36%;
+    max-width: 40%;
     margin: auto;
     margin-bottom: 20px;
+  }
+
+  .refresh-button {
+    display: grid;
+    grid-auto-columns: 1fr 150px;
+    margin-top: 5px;
+  }
+
+  .refresh-button button {
+    grid-column: 2;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 2px;
   }
 
   .container-facilities .container-inside .card p {
@@ -278,6 +315,7 @@ p mat-icon {
 
   .container-facilities .container-inside .container-table table td {
     font-size: 0.8em;
+    padding: 10px 5px;
   }
 
   .button {

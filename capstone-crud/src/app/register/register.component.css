@@ -9,6 +9,9 @@
   background: url("/assets/mainbg.jpg") center center/cover no-repeat;
 }
 
+.registration-alert {
+}
+
 .container {
   background-color: #ffffff;
   padding: 50px;

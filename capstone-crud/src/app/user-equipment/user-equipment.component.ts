@@ -100,4 +100,31 @@ export class UserEquipmentComponent {
       }
     );
   }
+
+  searchEquipment() {
+    if (this.searchValue.trim() !== '') {
+      const searchTerm = this.searchValue.trim().toLowerCase();
+      this.http.get('http://localhost:8085/api/equipments').subscribe(
+        (response: any) => {
+          this.EquipmentArray = response.data.filter((equipment: any) =>
+            equipment.EquipmentName.toLowerCase().includes(searchTerm)
+          );
+        },
+        (error) => {
+          console.error('Error searching equipment:', error);
+        }
+      );
+    } else {
+      this.getAllEquipments();
+    }
+  }
+
+  clearSearch() {
+    this.searchValue = '';
+    this.getAllEquipments();
+  }
+
+  refreshTable(): void {
+    this.getAllEquipments();
+  }
 }

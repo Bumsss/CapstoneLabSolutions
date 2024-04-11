@@ -50,7 +50,7 @@ p mat-icon {
 
 .container-facility-crud .container-inside .card .container-form-group {
   display: grid;
-  grid-template-columns: 250px 1fr 20px 1fr 250px;
+  grid-template-columns: 250px 1fr 20px 1fr 20px 1fr 250px;
   margin-top: 25px;
 }
 
@@ -76,11 +76,45 @@ p mat-icon {
   .container-inside
   .card
   .container-form-group
+  .form-group:nth-child(3) {
+  margin: auto;
+  grid-column: 6;
+}
+
+.container-facility-crud
+  .container-inside
+  .card
+  .container-form-group
   input[type="text"] {
   padding: 10px;
   border-style: none;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.185);
   text-align: center;
+}
+
+input[type="datetime-local"] {
+  padding: 10px;
+  border-style: none;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.185);
+  text-align: center;
+}
+
+.current-date {
+  margin-left: 20px;
+}
+
+.current-date h4 {
+  background-color: var(--darkest-color);
+  padding: 5px 13px;
+  border-radius: 2px;
+  width: 24%;
+  color: var(--background-color);
+  font-weight: 300;
+}
+
+.current-date span {
+  font-weight: 800;
+  margin-right: 10px;
 }
 
 .container-facility-crud
@@ -165,6 +199,7 @@ p mat-icon {
   border-spacing: 0;
   width: 100%;
   margin: 0;
+  margin-top: -20px;
 }
 
 .container-facility-crud .container-inside .container-table table {

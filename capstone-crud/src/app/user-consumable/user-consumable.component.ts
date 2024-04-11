@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DataService } from '../data.service';
 import { MatIconModule } from '@angular/material/icon';
+
 @Component({
   selector: 'app-user-consumable',
   standalone: true,
@@ -34,6 +35,9 @@ export class UserConsumableComponent {
 
   p: number = 1;
   itemsPerPage: number = 9;
+
+  searchValue: string = '';
+  searchResult: any[] = [];
 
   constructor(
     private http: HttpClient,
@@ -137,5 +141,53 @@ export class UserConsumableComponent {
           }
         );
     }
+  }
+  selectedStatus: string = 'all';
+  applyFilter() {
+    this.p = 1; // Reset pagination to first page
+
+    if (this.selectedStatus === 'low') {
+      this.ConsumableArray = this.ConsumableArray.filter(
+        (consumable) => consumable.Quantity < 5
+      );
+    } else if (this.selectedStatus === 'not_available') {
+      this.ConsumableArray = this.ConsumableArray.filter(
+        (consumable) => consumable.Quantity <= 0
+      );
+    } else if (this.selectedStatus === 'available') {
+      this.ConsumableArray = this.ConsumableArray.filter(
+        (consumable) => consumable.Quantity > 5
+      );
+    } else {
+      // Reset the filter and fetch all consumables
+      this.getAllConsumables();
+    }
+  }
+
+  searchConsumables() {
+    if (this.searchValue.trim() !== '') {
+      const searchTerm = this.searchValue.trim().toLowerCase();
+      this.http.get('http://localhost:8085/api/consumables').subscribe(
+        (response: any) => {
+          this.ConsumableArray = response.data.filter((consumable: any) =>
+            consumable.ConsumableName.toLowerCase().includes(searchTerm)
+          );
+        },
+        (error) => {
+          console.error('Error searching equipment:', error);
+        }
+      );
+    } else {
+      this.getAllConsumables();
+    }
+  }
+
+  clearSearch() {
+    this.searchValue = '';
+    this.getAllConsumables();
+  }
+
+  refreshTable(): void {
+    this.getAllConsumables();
   }
 }

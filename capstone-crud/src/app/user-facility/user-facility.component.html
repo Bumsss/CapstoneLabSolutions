@@ -18,7 +18,12 @@
         </div>
       </div>
       <form></form>
-
+      <div class="refresh-button">
+        <button class="btn btn-primary" (click)="refreshTable()">
+          <mat-icon fontIcon="refresh" aria-hidden="false"></mat-icon>
+          Refresh Table
+        </button>
+      </div>
       <div class="container-table">
         <div *ngIf="isResultLoaded">
           <table cellspacing="0">
@@ -26,6 +31,7 @@
               <tr>
                 <th scope="col">Room</th>
                 <th scope="col">Room Description</th>
+                <th scope="col">Available By:</th>
                 <th scope="col">Room Status</th>
               </tr>
             </thead>
@@ -43,6 +49,15 @@
               >
                 <td>{{ RoomItem.RoomName }}</td>
                 <td>{{ RoomItem.RoomDesc }}</td>
+                <td>
+                  <ng-container *ngIf="RoomItem.DateAvailable">
+                    {{ adjustTimeZone(RoomItem.DateAvailable) }}
+                  </ng-container>
+                  <ng-container *ngIf="!RoomItem.DateAvailable">
+                    N/A
+                    <!-- Display "N/A" if DateAvailable is null -->
+                  </ng-container>
+                </td>
                 <td>
                   <div
                     class="button"

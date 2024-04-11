@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
@@ -11,7 +12,6 @@ import {
 } from '@angular/forms';
 import { RegisterService } from '../services/register.service';
 import { Router, RouterModule } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -42,8 +42,35 @@ export class RegisterComponent implements OnInit {
         Validators.required,
         this.validateBirthday(),
       ]),
-      StudentNum: new FormControl('', Validators.required),
+      StudentNum: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(8),
+        Validators.pattern('^[0-9]*$'),
+      ]),
     });
+  }
+
+  validateName() {
+    const nameControl = this.registerForm.get('FirstName');
+    if (!nameControl?.value) return;
+
+    const nameRegex = /^[a-zA-Z\s]*$/;
+    if (!nameRegex.test(nameControl.value)) {
+      alert('Please enter a valid name (only letters and spaces)');
+      nameControl.setErrors({ invalidName: true });
+    } else {
+      nameControl.setErrors(null);
+    }
+  }
+
+  onStudentNumInput(event: any) {
+    let input = event.target.value;
+    input = input.replace(/[^\d]/g, '');
+    if (input.length > 8) {
+      alert('Please enter only 8 digits for the student number.');
+      input = input.slice(0, 8);
+    }
+    this.registerForm.get('StudentNum')!.setValue(input);
   }
 
   validateBirthday(): ValidatorFn {
@@ -54,7 +81,7 @@ export class RegisterComponent implements OnInit {
         today.getFullYear() - 18,
         today.getMonth(),
         today.getDate()
-      );
+      ); // Calculate the minimum date for 18 years old
 
       if (selectedDate > today || selectedDate >= minDate) {
         return { invalidBirthday: true };
@@ -65,11 +92,9 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    this.validateName();
     if (this.registerForm.invalid) {
-      this.snackBar.open('Please fill in all required fields.', 'Close', {
-        duration: 5000,
-        panelClass: 'error-snackbar',
-      });
+      alert('Please fill in all required fields.');
       return;
     }
 
@@ -84,10 +109,7 @@ export class RegisterComponent implements OnInit {
     this.registerService.checkStudentNumber(StudentNum).subscribe(
       (isRegistered) => {
         if (isRegistered) {
-          this.snackBar.open('Student number is already registered.', 'Close', {
-            duration: 5000,
-            panelClass: 'error-snackbar',
-          });
+          alert('Student number is already registered.');
         } else {
           this.isRegistering = true;
           this.registerService
@@ -101,11 +123,15 @@ export class RegisterComponent implements OnInit {
             )
             .subscribe(
               (response) => {
-                this.snackBar.open('Registration successful!', 'Close', {
-                  duration: 5000,
-                  panelClass: 'success-snackbar',
+                // Redirect to login page
+                this.router.navigate(['login']).then(() => {
+                  // Once redirected to login, show the registration note as snackbar
+                  this.snackBar.open(
+                    'Registration successful! \nNote: Change your PASSWORD on login to secure your account!',
+                    'Close',
+                    { duration: 5000, verticalPosition: 'top' } // Adjust duration as needed
+                  );
                 });
-                this.router.navigate(['']);
               },
               (error) => {
                 console.error('Registration error:', error);
